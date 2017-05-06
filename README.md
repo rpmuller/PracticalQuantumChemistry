@@ -1,2 +1,4 @@
 # PracticalQuantumChemistry
-Notes for a book on quantum chemistry
+This book contains notes from courses I taught while a staff member at
+Caltech 1997-2003. Still incomplete.
+
