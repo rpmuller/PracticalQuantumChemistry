@@ -1,0 +1,84 @@
+\chapter{Thermochemistry from Quantum Chemistry Calculations}
+\label{chap-thermochem}
+
+\section{Introduction}
+We can obtain a great deal of information from quantum chemistry
+calculation, and this section will discuss the different types of
+data and how they are obtained from quantum chemistry.
+
+\section{Frequencies and Thermal Properties}
+
+When we discussed geometry optimization we briefly mentioned the
+$Hessian matrix$, which is the matrix that contains the
+second-derivative of the energy with respect to nuclear
+displacements. From this matrix we may obtain both the \emph{normal
+modes of vibration} and the \emph{frequencies} associated with these
+modes. One can use these frequencies, for example, in analyzing
+infra-red spectra, and they are also often valuable in fitting quantum
+chemical results to force fields. 
+
+We may also use the frequencies to estimate the thermal properties of
+molecules. Quantum mechanics tells us that a molecule is never at
+rest, even at absolute zero; the molecule typically has some
+\emph{zero-point energy} in its vibrational modes. The frequencies may
+be used to estimate this energy. Moreover, the frequencies may be used
+to produce heat capacities, entropies, enthalpies, and free energies
+of the molecule at different temperatures. This information can be
+particularly useful in comparing to experimental results; the
+zero-point energy corrected free energy at the experimental
+temperature is generally the proper quantity to consider rather than
+the total energy in comparing the results of quantum chemistry
+caluclations to experiment.
+
+Finally, the frequencies and vibrational modes are often
+particularly useful in analyzing transition states. A proper
+transition state should have one imaginary frequency. The mode
+corresponding to that frequency should connect the reactant and
+product geometries. That is, the vibrational mode should correspond to
+motion along the reaction path that connects the reactants and
+products. If the vibrational mode does not exhibit this behavior, it
+is often a sign that something is wrong with the transition state.
+
+\section{Reaction Energetics}
+
+The ability to compute thermal properties as described in the previous
+section now makes it possible to get accurate approximations of
+chemical reactions from quantum chemistry. Suppose we are interested
+in the $S_N2$ bimolecular nucleophilic reaction Cl- + CH$_3$Br
+$\rightarrow$ CH$_3$Cl + Br-. If we were interested in the gas-phase
+reaction we would compute ground state structures for Cl-, Br-,
+CH$_3$Br, and CH$_3$Cl, and a $C_3v$ transition state for
+Cl-CH$_3$-Br. Each of these structures should have optimized
+geometries, zero-point energies, and thermochemical data (heat
+capacity, entropy, enthalpy, and free energy) for the temperatures of
+interest. We are then able to compute enthalpy and free energy curves
+for the reactions, and, if desired, use transition state theory to
+compute rate constants for the reaction kinetics. The process may also
+be repeated for solution phase reactions.
+
+\section{Heats of Formation}
+It is often important to compute \emph{heats of formation}, $\Delta
+H_f$, the enthalpy required to form the molecule from standard forms
+of the elements. Suppose we want to compute the heat of formation of
+methane, CH$_4$. The standard form of hydrogen is H$_2$ gas, which is
+easy to compute using quantum chemistry techniques, but the standard
+form of carbon is diamond, which is an infinite solid, and which is
+not easy to compute using the techniques we have discussed so far. A
+further complication is that very often the 5 kcal/mol accuracy in
+computing the heat of formation is not accurate enough for the desired
+application. In this case the best way to obtain quality heats of
+formation is to compute a range of molecules whose experimental heats
+of formation are known (the NIST WebBook at
+http://webbook.nist.gov/chemistry/ is an excellent source for
+experimental heats of formation), and to then determine by
+least-squares fitting a set of correction factors to the raw heats of
+formation. This experimentally corrected approach generally leads to
+RMS errors of $< 3$ kcal/mol, which is accurate enough for many
+applications. 
+
+\subsection{Simple Fits to Ensembles of Data}
+
+\subsection{G2 and G3 Theory}
+
+\section{Summary}
+

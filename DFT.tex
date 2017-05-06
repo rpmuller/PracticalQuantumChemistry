@@ -1,0 +1,200 @@
+\chapter{Density Functional Theory}
+
+\section{Introduction}
+This chapter presents a very basic introduction to Density Functional
+Theory (DFT). DFT is a remarkable theory that currently has wide use
+in quantum chemistry, as it has computational requirements comparable to
+Hartree-Fock (HF) techniques, but accuracy comparable to more exact
+techniques such as MP2.
+
+DFT starts from very different assumptions than does HF, but winds up
+with a set of equations (the Kohn-Sham equations) that are extremely
+similar to the Fock equations. We will therefore introduce the DFT
+one-particle Hamiltonian as a modification of the HF Hamiltonian. This
+will allow us to understand most of the salient points about DFT, but
+we should bear in mind that we are skipping over some very important
+distinctions. 
+
+\section{Review of the Hartre-Fock One-Particle Hamiltonian}
+The Fock equations are the one-particle Hamiltonian we solve in HF
+theory. For a closed-shell system, the same equation,
+
+\begin{equation}
+	F^c = h + 2J^c - K^c,
+\label{Fock}
+\end{equation}
+
+\noindent can be solved for every particle in the system. Here $h$ is
+the part of the Hamiltonian that describes one-electron interactions,
+such as the kinetic energy of an electron, or the attraction between
+an electron and a nucleus in the molecule. The term $J^c$, called the
+\emph{Coulomb term}, describes
+the electrostatic repulsion between the electrons in the system. The
+term $K^c$, called the \emph{exchange term}, is an artifact of the
+antisymmetry requirement that the Pauli exclusion principle puts on
+the wave function, and represents the energy change when two electrons
+are exchanged.
+
+Recall to get the Fock operator in (\ref{Fock}) we had to make the
+\emph{self-consistent field} approximation: electrons no longer see
+other individual electrons, but rather the average field of all of the
+other electrons. In reality, however, electrons \emph{do} see each
+other. The terms that the self-consistent field approximation leaves
+out are collectively referred to as \emph{electron correlation}. 
+
+As an example of electron correlation, consider the He atom, which has
+two electrons. The self-consistent field approximation says that there
+is as much chance of the two electrons being right next to each other
+as there is for them to be on opposite sides of the molecule. Clearly,
+since electrons are negatively charged and repel each other, this is
+not the case.
+
+\section{The Kohn-Sham Hamiltonian as an extension of the Fock
+equations}
+So then what does the true Hamiltonian look like, if we know that the
+Fock equations are an over-simplification. Perhaps we can take it to
+look something like
+
+\begin{equation}
+F = h + 2J - K + V_{corr}.
+\end{equation}
+
+\noindent That is, the Hamiltonian is roughly the same as the Fock
+equation, but has a correction term in it to add in electron
+correlation effects.
+
+Is it even plausible that such a statement might work? In two landmark
+papers, Hohenberg and Kohn proved that any property
+of the ground state wave function can also be derived from the ground
+state density, and Kohn and Sham derived a set of
+one-particle self-consistent equations for exchange and correlation
+effects based on such a \emph{density functional} treatment.
+
+Based on such a treatment, the one-particle equation looks like 
+
+\begin{equation}
+F = h + v_J[\rho] + v_X[\rho] + v_C[\rho].
+\label{Fks}
+\end{equation}
+
+\noindent Here the HF Coulomb and exchange operators are now written
+as functionals of the ground state electron density $\rho$, and there
+is an additional correlation term that is also a function of $\rho$.
+
+\section{The Local Density Approximation (LDA)}
+But what form are the functionals in equation (\ref{Fks}) to take? The
+initial guess that people made were that these functionals were
+actually functionals of the \emph{local density}. That is, the total
+correlation energy is a sum over lots of points of some function of
+the density at that point:
+
+\begin{equation}
+	E_C = \sum_i F(\rho(r_i)).
+\end{equation}
+
+\noindent There is a compelling elegance to such an approximation. We
+saw earlier that one of the problems with excluding electron
+correlation was that there was just as much chance that two electrons
+in the same orbital were right on top of one another as far
+apart. Perhaps we could penalize regions in the molecule that had too
+high density to keep this from happening.
+
+In 1980 Ceperley and Alder performed Quantum Monte
+Carlo calculations on the homogeneous electron gas at different
+densities, and allowed very accurate correlation potentials to be
+derived. The resulting LDA
+potentials have been found to work well for geometries, particularly
+in solids, but do not work as well for the energetics of finite
+molecules. 
+
+\section{The Generalized Gradient Approximation (GGA)}
+Of course, molecules are not homogeneous electron gases, they contain
+very inhomogeneous distributions of electrons, peaked near the
+nucleus. In fact, it is the particular nature of these inhomogeneities
+that gives rise to chemical bonding, so if we want chemical accuracy
+($\approx 5$ kcal/mol) from our method, we need to make sure we can 
+treat inhomogeneities accurately.
+
+So perhaps, rather than making functionals dependent upon only the
+local density, we could allow them to be a function of the local
+density, and the gradient of the local density:
+
+\begin{equation}
+	E_C = \sum_i F(\rho(r_i),\nabla\rho(r_i)).
+\end{equation}
+
+\noindent Such an approximation, due mostly to Perdew 
+and Becke allows the functional to
+more accurately describe inhomogeneities in the electron density. This
+means that these functionals, which go by names BLYP, PW91, and PBE,
+among others, can begin to describe molecules with chemical accuracy.
+
+\section{Exact Exchange}
+One of the things that this note has been glossing over is that the
+exchange operator $v_X$ is itself a function of the density, and, like
+the correlation functional, is a fit to homogeneous and inhomogeneous
+results. However, we already know that under some boundary conditions,
+it should look pretty much like the HF exchange operator
+$K$. Following these arguments, Becke experimented with
+\emph{hybrid functionals} that have some of the traditional GGA
+exchange functional $v_X$ in them, and some amount of the exact
+(i.e. HF) exchange operator $K$. By trial and error he found that
+$\approx30\%$ was optimal for a variety of molecules. The most
+commonly used functional is the B3LYP functional, which consists of
+Becke's three-term hybrid exchange functional, and the LYP correlation
+functional. 
+
+\section{The Kohn Sham Equations}
+
+\section{Practical Issues}
+
+\subsection{The Poisson Equation}
+
+\subsection{Atomic Grids}
+
+\section{Performance of a Family of Density Functionals}
+It is sometimes useful to understand how different density functionals
+perform over a wide range of molecules. Pople and coworkers have done
+two excellent studies \cite{Johnson93,Curtiss96}. Table
+\ref{table:popdft} summarizes information from this study.
+
+\begin{table}
+\caption{Summary of data from \cite{Curtiss96} comparing the
+performance of different density functionals for computing enthalpies
+of formation of a wide range of molecules. Average absolute deviations
+from experimental results are reported in kcal/mol.}
+\label{table:popdft}
+\begin{tabular}{lrrrrrrrr}\hline\hline
+       &              &              & Substituted &   & Inorganic & \\
+Method & Non-hydrogen & Hydrocarbons & Hydrocarbons & Radicals &
+	Hydrides & Overall \\ \hline
+SVWN & 73.58 & 133.71 & 124.41 & 54.56 & 33.65 & 90.88\\
+BLYP & 10.30 & 8.09 & 6.10 & 5.09 & 3.13 & 7.09 \\
+BPW91 & 12.25 & 4.85 & 7.99 & 6.48 & 4.21 & 7.85 \\
+BP86 & 16.61 & 25.82 & 26.80 & 15.76 & 8.16 & 20.19 \\
+B3LYP & 5.35 & 2.76 & 2.10 & 2.98 & 1.84 & 3.11 \\
+B3PW91 & 5.14 & 3.96 & 2.77 & 3.21 & 1.99 & 3.51 \\
+B3P96 & 7.80 & 30.81 & 25.49 & 13.53 & 7.86 & 17.97 \\
+\hline\hline
+\end{tabular}
+\end{table}
+
+One should not take such averages too seriously, but in general terms,
+these studies by Pople confirm results found by most other workers in
+the field. With quality (e.g. DZP) basis sets, one can normally
+anticipate 5-10 kcal/mol accuracy from GGA functionals such as BLYP or
+PW91, and 3-5 kcal/mol accuracy from Hybrid functionals such as
+B3LYP. One must be very cautious with the energies from LDA
+calculations such as SVWN, but the structures are very often reliable.
+
+
+\section{Suggestions for Further Reading}
+Walter Kohn's two landmark papers \cite{Hohenberg64,Kohn65} are both
+examples of that rare beast: a paper that is both an intellectually
+signficant breakthrough and that is easy to read. Parr and Yang's book
+\emph{Density Functional Theory of Atoms and Molecules} presents a
+very thorough treatment of the entire field, but only covers through
+the development of LDA. Perdew's \cite{Perdew86} and Becke's
+\cite{Becke86, Becke88a, Becke88b} papers present good descriptions of
+GGA, and Becke's 1993 paper \cite{Becke93} presents a good description
+of hybrid functionals.

@@ -1,0 +1,128 @@
+\chapter{Geometry Optimization}
+
+\section{Introduction}
+This chapter will describe how we can use quantum chemistry techniques
+to optimize the structures of molecules. 
+Recall that the Born-Oppenheimer approximation reasons that since
+nuclei are much heavier than electrons, the electronic wave functions
+can then be solved assuming that the nuclei are fixed. But what if we
+want the nuclei to move? More to the point, what if we want to use
+quantum chemistry techniques to determine the most stable structure of
+a molecule? This chapter will describe techniques for obtaining
+forces, optimized ground state structures, and optimized transition
+state structures, using quantum chemistry techniques.
+
+\section{Forces}
+We can view the quantum chemistry techniques we have developed as
+'black boxes' that take in a geometry---a set of coordinates for the
+nuclei in the molecule---and produce the corresponding energy. A very
+inefficient way to optimize a molecule would be to simply vary every
+nuclear position in every possible way. The most stable structure
+would be the one with the lowest energy, just as the resting place
+for a ball between two hills is in the valley between them.
+
+But such an exhaustive search is incredibly time consuming. Recall
+that molecules with $N$ atoms have $3N-6$ modes. A simple molecule
+like acetic acid (CH$_3$COOH), which has 8 atoms, has 18 internal
+modes that need to be optimized. Sampling only ten points in each
+coordinate would require $10^{18}$ energies to be computed. As there
+are roughly $3\times10^7$ seconds in a year, even if we could compute
+one of these energies in a second, the calculation would require 300
+million years.
+
+We can find a better technique by considering the aforementioned
+analogy of the ball rolling between two hills. The ball doesn't sample
+each point in the space to determine which is the lowest, it just
+rolls downhill. Similarly, we can determine the most stable geometry
+of a molecule by computing the \emph{forces} on the atoms, and then
+letting the atoms move in the directions dictated by those forces.
+
+Trying yet another naive approach, we can take a finite difference
+approach to computing forces and use the formula
+
+\begin{equation}
+F_\lambda = \frac{\partial E}{\partial\lambda} 
+	\approx \frac{E(r+\lambda)-E(r)}{|\lambda|},
+\end{equation}
+
+\noindent which says that $F_\lambda$, the force in some direction
+delta, is the energy difference when the molecular coordinates are
+moved by $\lambda$, divided by the length of the move.
+
+Calculating finite difference forces is still an inefficient technique
+for optimizing a geometry, but it is much faster than the exhaustive
+search. For our acetic acid molecule with 18 internal coordinates, we
+would require only 19 energy evaluation per force calculation. Then,
+requiring 10 force calculations in a geometry optimization only
+requires 190 calculations, as opposed to the $10^{18}$ required by the
+exhaustive search technique.
+
+The best technique for computing forces of molecules arises from the
+Hellmann-Feynman theorem
+
+\begin{equation}
+F_\lambda = \frac{\partial E}{\partial\lambda} 
+	= \langle\Psi|\frac{\partial H}{\partial\lambda}|
+	\Psi\rangle.
+\end{equation}
+
+\noindent A full discussion of the partial derivatives of the
+Hamiltonian is beyond the scope of the current discussion. But the
+point to remember is that these derivitaves may be computed by
+\emph{analytical techniques}, and that the same techniques can be used
+for higher order derivates, which will be useful in optimizing
+ground and transition states.
+
+\section{Ground State Optimization}
+This technique will be discussed in greater detail in upcoming
+lectures. For the current purposes, though, we will state a few basic
+ideas. 
+
+\emph{Steepest descent} techniques simply take steps in the direction
+of the forces. Some amount of guesswork is required in determining the
+proper step size, and these techniques typically converge slowly to
+the optimized geometry.
+
+\emph{Conjugate gradient} techniques use both the force and the
+previous direction moved, and move in a direction conjugate to the
+previous one, which greatly accelerates the convergence.
+
+\emph{Fletcher-Powell} techniques use the force and approximate the
+\emph{Hessian}---the matrix formed by the second derivative of the
+energy with respect to the atomic displacements---to optimize the
+geometry. Almost all quantum chemistry programs use variations of this
+approach for their geometry optimizations.
+
+\emph{Newton-Raphson} techniques are like Fletcher-Powell techniques,
+except the Hessian is computed analytically. These are the most
+accurate, and also the most time-consuming, techniques for optimizing
+geometries. 
+
+\section{Transition State Optimization}
+A full discussion of transition state optimization is beyond the scope
+of the current discussion. However, we will again state several
+important concepts.
+
+Just as in simple calculus one can determine whether an extremum point
+is a minimum or a maximum by looking at the second derivative, we can
+use the Hessian matrix to determine whether we are at a ground state,
+which is a minimum with respect to all atomic displacements, or at a
+\emph{transition state}, which is at a minimum in every direction but
+one, for which it is a maximum.
+
+One method of finding a transition state is to start from a ground
+state structure and to follow the lowest vibrational mode---which can
+be determined from the Hessian matrix---uphill until a maximum is
+found. These techniques can be extremely time consuming.
+
+Better techniques involve \emph{linear transit}, where structures for
+the reactants and the products are used to find the transition state
+between them. The energy is computed along several points that connect
+the reactant and product structures, and the maximum along that
+pathway is determined; this structure, which hopefully is fairly close
+to the transition state, is used in a traditional transition state
+search. A similar technique is the \emph{nudged elastic band}
+technique.
+
+\section{Quantum Chemistry Molecular Dynamics}
+Section to be completed later.

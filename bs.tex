@@ -1,0 +1,24 @@
+\documentclass{report}
+\usepackage{times}
+\usepackage{graphicx}
+\usepackage[dvips=true]{hyperref}
+
+\newcommand{\chem}[1]{\ensuremath{\mathrm{#1}}}
+\newcommand{\overlap}[2]{\ensuremath{\left\langle{#1}\left|{#2}\right\rangle\right.}}
+\newcommand{\bracket}[3]{\ensuremath{\left\langle{#1}\left|{#2}\right|{#3}\right\rangle}}
+\newcommand{\matvec}[1]{\ensuremath{\mathbf{#1}}}
+
+\begin{document}
+
+\title{Practical Quantum Chemistry}
+\author{Richard P. Muller}
+%\maketitle
+
+%\tableofcontents
+\input{SimpleHF}
+\input{OpenShellHF}
+
+\bibliography{../reference}
+\bibliographystyle{unsrt}
+
+\end{document}

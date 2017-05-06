@@ -1,0 +1,266 @@
+\chapter{Semiempirical Quantum Chemistry Calculations}
+
+\section{Introduction}
+Semiempirical techniques offer good accuracy at very modest
+computational cost for a number of different systems. These techniques
+start with the Fock equations (\ref{eq:fock}), but rather than attempt
+to solve it, first eliminates most of the small elements, and then
+approximates the rest of the terms with experimental values. 
+
+This note covers the theoretical underpinnings of the different
+semiempirical techniques for computing
+the electronic structure of molecules \cite{Pople65, Pople65a,
+Pople66, Pople70}.
+
+This note is limited to closed-shell molecules. I take some liberties
+during the derivations. In particular, I mix parts of Pople's original
+theory with later developments that I believe to be improvements (in
+particular the Mataga-Nishimoto parameterization of the two-electron
+integrals). Moreover, my CNDO development follows the spirit of CNDO/2
+rather than CNDO/1. I believe that these departures from Pople's
+original theory make the resulting theory easier to understand and
+faster to implement.
+
+\section{The Self Consistent Field Equations}
+We start by assuming that the wave function of a closed-shell molecule
+may be written as a product of doubly-occupied orbitals
+
+\begin{equation}
+	\Psi = \prod_i^{N_{occ}}\phi_i^2(\alpha\beta-\beta\alpha).
+\end{equation}
+
+\noindent We also assume that these orbitals may be accurately
+expanded as a linear combination of atomic-like orbitals
+
+\begin{equation}
+	\phi_i = \sum_{\mu}^{N_{bf}} c_{\mu i}\chi_\mu.
+\end{equation}
+
+\noindent Variational treatment of the orbital coefficients $c_{\mu
+i}$ leads to the Fock equations
+
+\begin{equation}
+	\sum_\nu F_{\mu\nu}c_{\mu i} = \sum_\nu S_{\mu\nu}c_{\nu i}
+		\epsilon_i.
+\end{equation}
+
+\noindent Here $F_{\mu\nu}$ is the Fock matrix, whose elements are
+given by 
+
+\begin{equation}
+	F_{\mu\nu} = t_{\mu\nu} + v^N_{\mu\nu} 
+		+ \sum_{\sigma\eta}P_{\sigma\eta}\left[
+			(\mu\nu|\sigma\eta)-\frac{1}{2}(\mu\sigma|\nu\eta)
+			\right],
+\label{fock}
+\end{equation}
+
+\noindent where $t_{\mu\nu}$ is the kinetic energy operator, $v^N$ is
+the nuclear attraction operator, and
+
+\begin{equation}
+	(\mu\nu|\sigma\eta) = \int\int \frac
+		{\chi_\mu^*(1)\chi_\nu(1)\chi_\sigma^*(2)\chi_\eta(2)}
+		{r_{12}}d^3r_1d^3r_2
+\label{two-e}
+\end{equation}
+
+\noindent is a two-electron integral.
+
+We will ignore the finer points of computing the terms in equations
+(\ref{fock}) and (\ref{two-e}), as the idea behind semiempirical
+techniques is to approximate the most important of these terms and to
+exclude the rest.
+
+\section{CNDO Approximations}
+CNDO makes several simplifying approximations, which will be discussed
+in this section.
+
+The fundamental assumption (from which the name of the technique
+derives) is that the differential overlap of atomic orbitals on the
+same atom is neglected. The first aspect of this is simplification of
+the overlap matrix, such that
+
+\begin{equation}
+	S_{\mu\nu} = \delta_{\mu\nu}.
+\label{ndo-overlap}
+\end{equation}
+
+\noindent For the atomic orbitals for which the theory was
+developed, the overlap between different atomic orbitals on the same
+atom is already zero. Consequently, in that basis, the only elements
+excluded are between atomic orbitals on different atoms.
+
+The next approximation simplifies the two electron integrals:
+
+\begin{equation}
+	(\mu\nu|\sigma\eta) 
+		= (\mu\mu|\sigma\sigma)\delta_{\mu\nu}\delta_{\sigma\eta}
+		= \gamma_{\mu\sigma}.
+\end{equation}
+
+\noindent The difficulty with this level of approximation is that the
+integral is no longer rotationally invarient. Consequently, these
+integrals are normally further simplified to represent $s$-type
+integrals on the different atoms, and thus depend only on the two
+atoms, $A$ and $B$, on which the functions $\mu$ and $\sigma$ reside.
+
+This integral $\gamma_{\mu\nu} = \gamma_{AB}$ may be further
+approximated using the Mataga-Nishimoto approximation
+\cite{Mataga57, Zerner80}:
+
+\begin{equation}
+	\gamma_{AB} = \frac{f_\gamma}
+		{\frac{2f_\gamma}{\gamma_{AA}+\gamma_{BB}} + R_{AB}}.
+\label{mataga-nishimoto}
+\end{equation}
+
+\noindent The $f_\gamma$ parameter is widely \cite{Zerner80} taken to
+be 1.2, and the expressions for $\gamma_{AA}$ are taken from Pariser
+and Parr \cite{Pariser53}:
+
+\begin{equation}
+	\gamma_{AA} = I_A - A_A
+\end{equation}
+
+\noindent where $I_A$ and $A_A$ are the ionization potential and the
+electron affinity of atom $A$, respectively.
+
+The next approximations deal with the one-electron terms $t_{\mu\nu}$
+and $v^N_{\mu\nu}$. The kinetic energy term is treated as a diagonal
+parameter
+
+\begin{equation}
+	t_{\mu\nu} = t_{\mu\mu}\delta_{\mu\nu}
+\end{equation}
+
+\noindent and the diagonal term is parameterized as
+
+\begin{equation}
+	t_{\mu\mu} = -\frac{1}{2}(I_\mu + A_\mu),
+\end{equation}
+
+\noindent the average of the ionization potential $I_\mu$ and the
+electron affinity $A_\mu$ for function $\mu$.
+
+The nuclear attraction integral $v^N$ 
+
+\begin{equation}
+	v^N_{\mu\nu} = \sum_B \int \frac{\chi_\mu \chi_\nu}{r_B}d^3r
+\end{equation}
+
+\noindent is simplified by ignoring all integrals unless $\mu$ and
+$\nu$ are on the same atom $A$
+
+\begin{equation}
+	v^N_{\mu\nu} = \left\{
+		\begin{array}{ll}
+		\sum_B V_{AB}  & \mbox{if $\mu,\nu \in A$} \\
+		0 & \mbox{otherwise}
+		\end{array}
+		\right. .
+\end{equation}
+
+\noindent This may be further approximated via
+
+\begin{equation}
+	V_{AB} = Z_B\gamma_{AB}.
+\end{equation}
+
+The final approximation concernes $F_{\mu\nu}$, the off-diagonal
+elements of the Fock matrix. We ignore all of these elements when
+$\mu$ and $\nu$ are on the same atom. Of the remaining elements, we
+approximate the one-electron terms via
+
+\begin{equation}
+	F_{\mu\nu}^1 = \beta_{AB}^0S_{\mu\nu}
+\end{equation}
+
+\noindent and the two-electron terms as
+
+\begin{equation}
+	F_{\mu\nu}^2 = -\frac{1}{2}P_{\mu\nu}\gamma_{AB}.
+\end{equation}
+
+\noindent Here the resonance term $\beta_{AB}^0 = \frac{1}{2}(\beta_A
++ \beta_B)$, and $\beta_A$ and $\beta_B$ are parameters. We note that
+here the $S_{\mu\nu}$ elements represent the true overlap, rather than
+the diagonal overlap used in equation (\ref{ndo-overlap}).
+
+Combining all of these approximations together, we are left with the
+following form of the Fock matrix:
+
+\begin{equation}
+	F_{\mu\mu} = -\frac{1}{2}(I_\mu + A_\mu)
+		+ [(P_{AA}-Z_A) - \frac{1}{2}(P_{\mu\mu}-1)]\gamma_{AA}
+		+ \sum_{B \neq A} (P_{BB}-Z_B)\gamma_{AB},
+\end{equation}
+
+\begin{equation}
+	F_{\mu\nu} = \beta_{AB}^0S_{\mu\nu} 
+		- \frac{1}{2}P_{\mu\nu}\gamma_{AB}.
+\end{equation}
+
+\section{CNDO Parameters}
+The most important issue in any NDO technique is that of obtaining
+accurate parameters. This section will describe some of the more
+common sets of parameters.
+
+Table \ref{table-cndo2} describes the original CNDO/2 parameters from
+Pople. 
+
+\begin{table}
+\caption{CNDO/2 Parameterization (eV)}
+\label{table-cndo2}
+\begin{center}
+\begin{tabular}{cccc}\\ \hline
+Element & $\frac{1}{2}(I_s+A_s)$ & $\frac{1}{2}(I_s+A_s)$ & $\beta_A$
+\\ \hline
+H 	& 7.176 	&		& 9.0 \\ 
+Li 	& 3.106 	& 1.258 	& 9.0 \\
+Be 	& 5.946		& 2.563		& 13.0 \\
+B 	& 9.594		& 4.001		& 17.0 \\
+C 	& 14.051	& 5.572		& 21.0 \\
+N 	& 19.316	& 7.275		& 25.0 \\
+O 	& 25.390	& 9.111		& 31.0 \\
+F 	& 32.272	& 11.080	& 39.0 \\
+Na 	& 2.804		& 1.302		& 7.720\\
+Mg 	& 5.125		& 2.052		& 9.447\\
+Al 	& 7.771		& 2.995		& 11.301\\
+Si 	& 10.033	& 4.133		& 13.065\\
+P 	& 14.033	& 5.464		& 15.070\\
+S 	& 17.650	& 6.989		& 18.150\\
+Cl 	& 21.591	& 8.708		& 22.330\\ \hline
+\end{tabular}
+\end{center}
+\end{table}
+
+Table \ref{sichel-params} lists the parameterization of Sichel and
+Whitehead (reference \cite{Sichel67}) for CNDO; these parameters also
+include $\gamma_{AA}$ terms for the Mataga-Nishimoto equation
+(equation (\ref{mataga-nishimoto})).
+
+\begin{table}
+\caption{Sichel and Whitehead (reference \cite{Sichel67}) Parameters (eV)}
+\label{sichel-params}
+\begin{center}
+\begin{tabular}{llll}\\ \hline
+Element & $-\frac{1}{2}(I_s + A_s)$ & $-\frac{1}{2}(I_p + A_p)$ 
+	& $\gamma_{AA}$ \\ \hline
+H 	& -13.595	& 		& 12.848 \\
+Li 	& -4.999	& -3.673	& 3.458 \\
+Be 	& -15.543	& -12.280	& 5.953 \\
+B 	& -30.371	& -24.702	& 8.048 \\
+C 	& -50.686	& -41.530	& 10.333 \\
+N 	& -70.093	& -57.848	& 11.308 \\
+O 	& -101.306	& -84.284	& 13.907 \\
+F 	& -129.544	& -108.933	& 15.233 \\ \hline
+\end{tabular}
+\end{center}
+\end{table}
+
+%\section{Extended Huckel and Tight Binding}
+
+%\section{Intermediate Neglect of Differential Overlap (INDO)}
+
+%\section{NDDO and Mopac}

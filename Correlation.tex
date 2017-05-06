@@ -1,0 +1,543 @@
+\chapter{Electron Correlation: Beyond HF Theory}
+
+\section{Introduction}
+Hartree-Fock theory is appropriate for many different applications in
+electronic structure theory, especially for the ground states of
+molecules near their equilibrium geometries. It does have two major
+shortcomings: it ignores much of the electron correlation, and excited
+states are difficult to calculate.  
+
+The first shortcoming of HF theory is that electron correlation is
+ignored \cite{Szabo82}, except in an averaged sense. Electron
+correlation is the interactions between the motions of the individual
+electrons, and HF theory, because it calculates an electron's
+motion in the average field produced by the other electrons rather
+than the exact positions of the other electrons, leaves much of the
+electron correlation out. 
+
+One manifestation of the incorrect treatment of electron correlation
+in HF theory is the well-known fact that HF wave
+functions of the type of equations \ref{eq:prodwf} or \ref{eq:wfngen} do not
+dissociate properly. Consider the H2 molecule
+described by two basis functions, $\chi_r$ and $\chi_l$. The
+ground state HF wave function will be given by 
+
+\begin{equation}
+  \Psi_{HF} = |(\chi_r+\chi_l)(\chi_r+\chi_l)\alpha\beta \rangle 
+  = \frac{1}{\sqrt{2}}[\chi_r\chi_r + \chi_r\chi_l + \chi_l\chi_r
+	+ \chi_l\chi_l](\alpha\beta-\beta\alpha)
+\end{equation}
+
+\noindent which is an accurate description of the bonding when the
+molecule is near equilibrium bond length. As the molecule dissociates
+the terms $\chi_l\chi_l$ and $\chi_r\chi_r$ in the wave function
+become increasingly unstable because they correspond to heterolytic
+bond cleavage. The wave function should dissociate only to the terms
+corresponding to homolytic cleavage, $\chi_l\chi_r$ and
+$\chi_r\chi_l$. The valence bond (VB) wave function starts from the
+correct dissociation fragments $\chi_l\chi_r$ and $\chi_r\chi_l$.
+Consequently, the VB wave function is given by
+
+\begin{equation}
+  \Psi_{VB} = |\chi_l\chi_r\alpha\beta+\chi_r\chi_l\alpha\beta
+	\rangle 
+	= \frac{2}{\sqrt{2}}[\chi_l\chi_r + \chi_r\chi_l]
+	(\alpha\beta-\beta\alpha)
+\label{eq:vbwfn}
+\end{equation}
+
+\noindent which dissociates to the correct limit because it does not
+contain the heterolytic cleavage terms $\chi_l\chi_l$ and
+$\chi_r\chi_r$. A generalization of the VB wave function, the
+generalized valence bond (GVB) wave function, described at length in
+the next section, always yields a lower energy than the HF wave
+functions, but the difference in energies is negligible for small bond
+distances.
+
+Figure \ref{fig:gvb} shows an example of the incorrect dissociation of
+HF wave functions. Shown is the dissociation of H$_2$ using a HF wave
+function, with respect to the fragment energy of the individual H
+atoms. On the same plot is the GVB wave function that will be
+discussed in the next section. As is evident from figure
+\ref{fig:gvb}, the HF wave function dissociates to an incorrect limit,
+one higher in energy than the individual H fragments. The GVB wave
+function, on the other hand, dissociates to the correct energy. 
+
+\begin{figure}
+\caption{Dissociation of diatomics using HF and GVB wave functions.} 
+\label{fig:gvb}
+\end{figure}
+
+Another shortcoming of HF theory is that it is often difficult to
+converge excited states of wave functions \cite{Foresman92}. Unless
+the excited state has a different overall symmetry than the ground
+state, it generally collapses to the ground state upon orbital
+optimization. This prevents HF theory from providing chemically useful
+information about excitation energies and charge densities of excited
+states.  
+
+The next section presents a simple correction to some of the HF
+shortcomings, the aforementioned GVB wave function, which generalizes
+the two electron wave function from equation \ref{eq:vbwfn} for many
+electron wave functions.
+
+\section{Generalized Valence Bond Theory}
+\label{sec2.6}
+One simple correction to HF theory that overcomes many of HF's
+shortcomings is Generalized Valence Bond (GVB)
+theory \cite{Bobrowicz77,Hunt70,Bair77,Yaffe76}. GVB theory replaces
+the closed-shell HF wave function 
+
+\begin{equation}
+	\Psi_{HF} = \left|\prod_i^{occ}\phi_i^2\alpha\beta
+	\right\rangle
+\label{eq:gvbhfwfn}
+\end{equation}
+
+\noindent with the GVB wave function \cite{Bobrowicz77}
+
+\begin{equation}
+  \Psi_{GVB} = \left|\left[\prod_i^{occ}(\phi_{i1}\phi_{i2}
+	+\phi_{i2}\phi_{i1})\right]
+	\Theta(1,2,\dots,N_{occ})\right\rangle
+\label{eq:gvbwfn1}
+\end{equation}
+
+\noindent where $\Theta(1,2,\dots,Nocc)$ is a general spin wave
+function for the $N_{occ}$ electrons and the GVB orbitals $\phi_{i1}$
+and $\phi_{i2}$ are not orthogonal. It is generally convenient to
+replace the general spin coupling $\Theta$ in equation
+\ref{eq:gvbwfn1} with the GVB-Perfect Pairing (GVB-PP) wave function
+where the two electrons in each GVB pair are paired only with each
+other. This reduces equation \ref{eq:gvbwfn1} to \cite{Bobrowicz77}
+
+\begin{equation}
+   \Psi_{GVB} = \left|\prod_i^{occ}(\phi_{i1}\phi_{i2}+\phi_{i2}\phi_{i1})
+	\alpha\beta\right\rangle,
+\label{eq:gvbpp0}
+\end{equation}
+
+\noindent or
+
+\begin{equation}
+   \Psi_{GVB} = \left|\prod_i^{occ}\phi_{i1}\phi_{i2}
+	(\alpha\beta-\beta\alpha)\right\rangle.
+\label{eq:gvbpp}
+\end{equation}
+
+\noindent Equation \ref{eq:gvbpp} may be regarded as a generalization
+of equation \ref{eq:gvbhfwfn}, where each orbital $\phi_i$ in equation
+\ref{eq:gvbhfwfn} is replaced by a GVB pair consisting of two
+non-orthogonal orbitals $\phi_{i1}\phi_{i2}$
+
+\begin{equation}
+	\phi_i\phi_i\alpha\beta \rightarrow 
+	\phi_{i1}\phi_{i2}(\alpha\beta - \beta\alpha) 
+	= (\phi_{i1}\phi_{i2} + \phi_{i2}\phi_{i1})\alpha\beta.
+\end{equation}
+
+For computational purposes, it is convenient to replace the GVB pair 
+
+\begin{equation}
+	\left(\phi_{i1}\phi_{i2} + \phi_{i2}\phi_{i1}\right)
+	\alpha\beta
+\end{equation}
+
+\noindent with the natural orbital representation \cite{Bobrowicz77}
+
+\begin{equation}
+	\left(c_{ig}\phi_{ig}\phi_{ig}
+	+c_{iu}\phi_{iu}\phi_{iu}\right)\alpha\beta
+\end{equation}
+
+\noindent where $\phi_{ig}$ and $\phi_{iu}$ are now orthogonal and
+given by
+
+\begin{equation}
+   \phi_{i1} = \frac{c_{ig}^{1/2}\phi_{ig}+c_{iu}^{1/2}\phi_{iu}}
+	{\sqrt{c_{ig}+c_{iu}}}
+\end{equation}
+
+\begin{equation}
+   \phi_{i2} = \frac{c_{ig}^{1/2}\phi_{ig}-c_{iu}^{1/2}\phi_{iu}}
+	{\sqrt{c_{ig}+c_{iu}}}.
+\end{equation}
+
+\noindent With the strong orthogonality constraint, which assumes that GVB
+orbitals of different pairs are orthogonal, the energy may
+once again be written in the familiar form
+
+\begin{equation}
+   E_{el} = \sum_i^{N_{occ}}2f_ih_{ii} + \sum_{ij}^{N_{occ}}
+	(a_{ij}J_{ij} + b_{ij}K_{ij})
+\end{equation}
+
+\noindent except now $f_i$ is given by \cite{Bobrowicz77} 
+
+\begin{equation}
+	f_i = \left\{\begin{array}{ll}
+		1 & \mbox{$\phi_i$ is doubly-occupied} \\
+		1/2 & \mbox{$\phi_i$ is singly-occupied} \\
+		c_i^2 &   \mbox{$\phi_i$ is a pair orbital with} \\
+		      & \mbox{GVB CI coefficient $c_i$}.  
+		\end{array}\right. .
+\end{equation}
+
+\noindent Similarly, 
+
+\begin{equation}
+	a_{ij} = 2f_if_j 
+\end{equation}
+
+\begin{equation}
+	b_{ij} = -f_if_j 
+\end{equation}
+
+\noindent except that $b_{ij} = -1/2$ if $\phi_i$ and $\phi_j$ are
+both singly-occupied.
+
+Furthermore, if $\phi_i$ is a pair orbital
+
+\begin{equation}
+	a_{ii} = f_i
+\end{equation}
+
+\begin{equation}
+	b_{ii} = 0
+\end{equation}
+
+\noindent and if $\phi_i$ and $\phi_j$ are in the same pair,
+
+\begin{equation}
+	a_{ij} = 0
+\end{equation}
+
+\begin{equation}
+	b_{ij} = -c_ic_j
+\end{equation}
+
+Because equations \ref{eq:emod}--\ref{eq:gamma} in chapter
+\ref{chap:simplehf} are derived based on the general energy expression in
+equation \ref{eq:eos}, the orbital optimization equations are still
+appropriate for our modified definitions of $f_i$, $a_{ij}$, and
+$b_{ij}$. Thus, the same equations that were used to optimize
+open-shell HF wave functions can be used to optimize GVB-PP wave
+functions.
+
+For a GVB wave function of the form of equation \ref{eq:gvbpp} with
+$N_p$ pairs and $2N_p$ natural orbitals (often referred to as a ``GVB
+$N_p/2N_p$'' wave function), $2N_p$ different values of $f_i$ are
+obtained, and hence the wave function is said to have $2N_p$ shells.
+$2N_p$ Fock operators must also be formed, and hence the wave function
+is said to also have $2N_p$ Hamiltonians.
+
+The coefficients $c_{ig}$ and $c_{iu}$ for the GVB orbital are
+optimized each iteration \cite{Bobrowicz77, Bair77} by solving a
+two-by-two configuration interaction (\emph{vide infra}) for each GVB
+pair to minimize the overall energy with respect to the $c_{ig}$ and
+$c_{iu}$ coefficients. This amounts to solving \cite{Bobrowicz77}
+
+\begin{equation}
+	Y^ic_i = c_iE_i
+\label{eq:gvbcoef}
+\end{equation}
+
+\noindent where
+
+\begin{equation}
+  Y^i =  \left[\begin{array}{cc}
+	Y^i_{gg} & Y^i_{gu} \\
+	Y^i_{gu} & Y^i_{uu} 
+	\end{array} \right]
+\end{equation}
+
+\begin{equation}
+  Y^i_{gu} = K_{ig,iu}
+\end{equation}
+
+\begin{equation}
+  Y^i_{gg} = \frac{F^{ig}}{f_{ig}}
+\end{equation}
+
+\begin{equation}
+  Y^i_{uu} = \frac{F^{iu}}{f_{iu}}
+\end{equation}
+
+\noindent The added functional freedom associated with having a pair
+of orbitals describe the electron pair allows the GVB-PP wave function
+to incorporate the appropriate amount of ionic and covalent character
+for any particular internuclear separation. Such a modification to the
+wave function for the electron pair is tantamount to including
+electron correlation between the two electrons in the GVB pair. One
+important result is that GVB-PP wave functions dissociate to the
+correct limits, yielding accurate physical data for chemical systems.
+Moreover, by selecting a higher root to equation \ref{eq:gvbcoef}
+excited states can be selected \cite{Foresman92}.
+
+Generally, molecular wave functions have a combination of orbitals
+described by (closed- and open-shell) HF and GVB wave functions. The
+next section summarizes equations for these wave functions.
+
+\subsection{Summary of Equations for General HF/GVB Wave Functions}
+\label{sec2.7}
+The general wave function composed of $N_c$ doubly-occupied core
+orbitals, $N_o$ singly-occupied open-shell orbitals, and $N_p$ pairs
+of variably-occupied GVB natural orbitals is given by
+
+\begin{equation}
+	\Psi = |\Psi_{Core}\Psi_{Open}\Psi_{Pair}\rangle
+\label{eq:wfngen2.7}
+\end{equation}
+
+\noindent where
+
+\begin{equation}
+	\Psi_{Core} = \prod_{i=1}^{N_c} \phi_i\phi_i\alpha\beta
+\end{equation}
+
+\begin{equation}
+	\Psi_{Open} = \prod_{i=1}^{N_o} \phi_i\alpha
+\end{equation}
+
+\begin{equation}
+	\Psi_{Pair} = \prod_{i=1}^{N_p} (c_{ig}\phi_{ig}^2
+		+ c_{iu}\phi_{iu}^2)(\alpha\beta-\beta\alpha)
+\end{equation}
+
+\noindent and $c_{ig}$ and $c_{iu}$ are optimized each iteration via
+equation \ref{eq:gvbcoef}.
+
+The electronic energy of this general wave function is given by 
+
+\begin{equation}
+  E = \sum_{i=1}^{N_{occ}} 2f_ih_{ii} + 
+  \sum_{i,j=1}^{N_{occ}} (a_{ij}J_{ij} + b_{ij}K_{ij}).
+\label{eq:egen2.7}
+\end{equation}
+
+\noindent Here
+
+\begin{equation}
+  N_{occ} = N_c + N_o + 2N_p,
+\end{equation} 
+
+\noindent $h$, $J$, and $K$, are the standard one- and two-electron
+operators given by equations \ref{eq:hij}, \ref{eq:jij}, and
+\ref{eq:kij}.
+
+Once again, $f_i$ is given by \cite{Bobrowicz77} 
+\begin{equation}
+	f_i = \left\{\begin{array}{ll}
+		1	& \mbox{$\phi_i$ is doubly-occupied} \\
+		1/2	& \mbox{$\phi_i$ is singly-occupied} \\
+		c_i^2 	& \mbox{$\phi_i$ is a pair orbital with} \\
+			& \mbox{GVB CI coefficient $c_i$}.  
+		\end{array}\right.,
+\end{equation}
+
+\begin{equation}
+	a_{ij} = 2f_if_j,
+\end{equation}
+
+\begin{equation}
+	b_{ij} = -f_if_j,
+\end{equation}
+
+\noindent except that $b_{ij} = -1/2$ if $\phi_i$ and $\phi_j$ are both
+singly-occupied. Furthermore, if $\phi_i$ is a pair orbital
+
+\begin{equation}
+	a_{ii} = f_i
+\end{equation}
+
+\begin{equation}
+	b_{ii} = 0
+\end{equation}
+
+\noindent and if $\phi_i$ and $\phi_j$ are in the same pair,
+
+\begin{equation}
+	a_{ij} = 0
+\end{equation}
+
+\begin{equation}
+	b_{ij} = -c_ic_j
+\end{equation}
+
+Because the general wave function in equation \ref{eq:wfngen2.7}
+requires $(2+2N_p)$ different values of $f_i$, this wave function is
+said to have $(2+2N_p)$ shells. Furthermore, because the general wave
+function requires $(1+N_o+2N_p)$ different Fock operators, the general
+wave function is said to have $(1+N_o+2N_p)$ Hamiltonians. These
+numbers assume that there are both core and open-shell orbitals. If
+there are no open-shell orbitals but there are core orbitals, the
+number of shells and Hamiltonians is $(1+2N_p)$; similar changes are
+made when there are no core orbitals.
+
+To optimize the orbitals of this general wave function, first the
+optimal mixing of the occupied orbitals with the other
+occupied orbitals is calculated. The optimal mixing is
+determined by first calculating the $\Delta$ matrix,  
+
+\begin{equation}
+  \Delta = \left[\begin{array}{cc}
+	0 & \frac{A_{ij}}{B_{ij}} \\
+	-\frac{A_{ij}}{B_{ij}} & 0
+	\end{array}\right]
+\label{eq:del2.7}
+\end{equation}
+
+\noindent where
+
+\begin{equation}
+  A_{ij} = \langle i|F^j-F^i|j\rangle,
+\end{equation}
+
+\begin{equation}
+  B_{ij} = \langle i|F^j-F^i|i \rangle 
+	- \langle j|F^j-F^i|j \rangle + \gamma_{ij},
+\end{equation}
+
+\begin{equation}
+  \gamma_{ij} = 2(a_{ii}+a_{jj}-2a_{ij})K_{ij}
+		+ (b_{ii}+b_{jj}-2b_{ij})(J_{ij}+K_{ij})
+\label{eq:gamma2.7}
+\end{equation}
+
+\noindent The new set of orbitals $\{\phi^{New}\}$ are obtained from
+the old set of orbitals $\{\phi^{Old}\}$ via the transformation
+
+\begin{equation}
+  [\phi^{New}] = \exp(\Delta)[\phi^{Old}]
+\end{equation}
+
+The next step in the wave function optimization is the calculation of
+the optimal mixing of the occupied orbitals with the virtual
+orbitals. This optimization is done by forming the Fock
+operator 
+
+\begin{equation}
+  F^i_{\mu\nu} = f_ih_{\mu\nu} + 
+	\sum_{k=1}^{N_{ham}} (a_{ik}J^k_{\mu\nu}+b_{ik}K^k_{\mu\nu})
+\label{eq:f2.7}
+\end{equation}
+
+\noindent One Fock operator is required for all of the core orbitals,
+and another is required for each open-shell and GVB pair orbital. The
+Fock operator is transformed into molecular orbitals via equation
+\ref{eq:fij}, and diagonalized. The eigenvectors yield the optimal
+linear combination of occupied and virtual orbitals to form the new
+set of occupied orbitals. The optimization process is repeated until
+the orbitals stop changing.
+
+\section{Configuration Interaction}
+\label{sec2.8}
+Another method of correcting for the shortcomings of HF theory is
+Configuration Interaction \cite{Szabo82} (CI). CI considers the
+interaction of excited wave functions with the ground
+state wave function. As with GVB wave functions, the
+excited wave functions give additional functional
+freedom for the total CI wave function to use to
+adjust to find an optimal energy. For a wave function
+consisting of $N$ spin orbitals  
+
+\begin{equation}
+  \Psi = |12\cdots i\cdots j\cdots N\rangle
+\end{equation}
+
+\noindent with unoccupied spin orbitals $\psi_r, \psi_s, \dots$ the
+wave function
+
+\begin{equation}
+  \Psi_i^r = |12\cdots i\cdots Nr\rangle
+\end{equation}
+
+\noindent is a singly excited wave function obtained from taking an
+electron out of occupied orbital $\psi_i$ and putting it into orbital
+$\psi_r$.  Similarly, the wave function
+
+\begin{equation}
+  \Psi_{ij}^{rs} = |12\cdots Nrs\rangle
+\end{equation}
+
+\noindent is a doubly excited wave function obtained by taking an
+electron out of each of the occupied orbitals $\psi_i$ and $\psi_j$
+and putting them into unoccupied orbitals $\psi_r$ and $\psi_s$. In a
+similar fashion triply, quadruply, and so on, excited wave functions
+may be formed.
+
+CI wave functions can add electron correlation by including a linear
+combination of excited wave functions with the ground
+state wave function \cite{Szabo82}
+
+\begin{equation}
+  \Psi_{CI} = \Psi + \sum_i^{occ} \sum_r^{Virt}C_i^r\Psi_i^r +
+	\sum_{ij}^{occ} \sum_{rs}^{Virt}C_{ij}^{rs}\Psi_{ij}^{rs}+\cdots
+\end{equation}
+
+\noindent The CI coefficients C are obtained by forming the CI matrix
+$A_{IJ}$, whose elements are given by
+
+\begin{equation}
+  A_{IJ} = \langle \Psi_I | H | \Psi_J \rangle 
+\end{equation}
+
+\noindent where $\Psi_I$ and $\Psi_J$ are any of the ground state or
+multiply excited wave functions. Diagonalizing $A_{IJ}$ yields the
+coefficients $C$ as the eigenvectors, and the correlated energy as the
+lowest eigenvalue. The singly-excited wave functions interact weakly
+with the ground state, and consequently the doubly-excited
+determinants are the most important for the correlated energy
+\cite{Szabo82}.
+
+The CI wave function can also be used to calculate excited states
+\cite{Foresman92}. When $I$ and $J$ range over the singly-excited
+determinants the eigenvectors of $A_{IJ}$ yield the linear combination
+of excited wave functions in the various excited states, and the 
+eigenvalues yield the energies of the excited states.
+
+Although the CI wave function does correct the shortcomings of HF
+theory, one major drawback is that the elements in $A_{IJ}$ require a
+full transformation of the two-electron integrals
+$(\mu\nu|\sigma\eta)$. This transformation scales as
+$\mathcal{O}(N_{bf}^5)$ where $N_{bf}$ is the number of basis
+functions. HF and GVB calculations scale only as
+$\mathcal{O}(N_{bf}^4)$, which means that a CI calculation is
+significantly more expensive than a HF or GVB calculation for large
+molecules. For CI calculations diagonalization of the $A_{IJ}$ matrix
+is often a much more computationally intensive process than the
+$\mathcal{O}(N_{bf}^5)$ integral transformation, depending on what
+levels of excitations are included, and so the work required to
+transform the integrals is negligible. Nonetheless, because the CI
+calculations scale as at least $\mathcal{O}(N_{bf}^5)$ they are
+generally too expensive for large molecules, and methods that do not
+require a full integral transformation, such as the general HF/GVB
+wave functions described in Section \ref{sec2.7} become more
+attractive.
+
+\section{Multi-Configurational Self-Consistent Field Wave Functions}
+\label{sec2.9}
+Another method of correcting the shortcomings of HF theory is the
+Multi-Configurational Self-Consistent Field (MCSCF) method
+\cite{Szabo82,Yaffe76}. Whereas a CI wave function merely
+diagonalizes the Hamiltonian matrix between various excited
+configurations, the MCSCF solve self-consistently for the optimal
+orbitals among the excited configurations. Again, the additional
+functional degrees of freedom afforded by the excited wave functions
+give the total MCSCF wave function the ability to more accurately
+adjust to the constraints of the molecule, which allows MCSCF wave
+functions to describe correlated wave functions and excited states.
+Each iteration the coefficients of the various component wave
+functions in the MCSCF wave function are recalculated, and the
+orbitals are optimized using these coefficients. The GVB wave
+functions described in Section \ref{sec2.6} are a special case of
+MCSCF wave function \cite{Bobrowicz77}. The GVB wave function does not
+require an integral transformation to compute its energy and optimize
+its wave functions, but in general, the MCSCF energy and orbital
+optimization equations do require a transformation of the two-electron
+integrals. Like the CI wave function, the integral transformation
+makes MCSCF calculations prohibitively expensive for large molecules.
+
+\section{Moller-Plesset Perturbation Theory}
+
+\section{Coupled Cluster}

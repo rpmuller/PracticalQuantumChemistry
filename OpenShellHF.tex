@@ -1,0 +1,306 @@
+\chapter{Open-Shell Hartree-Fock Theory}
+
+\section{Introduction}
+Chapter \ref{chap:simplehf} described Hartree-Fock theory for
+closed-shell wave functions, where every electron was spin paired with
+another in a doubly-occupied orbital. Most molecules that we encounter
+in the everyday life (water, ethanol, and acetic acid, to mention a
+few that are probably in your kitchen) are closed-shell
+molecules. However, some molecules (most notably oxygen), and many
+important fragments of molecules, contain one or more unpaired
+electrons residing in singly-occupied orbitals. One way to solve these
+system is to treat the up-spin and down-spin electrons as if they were
+in two separate universes; this technique is called \emph{unrestricted
+Hartree-Fock} (UHF) and is described in section \ref{sec:uhf}. UHF
+techniques have the shortcoming that the orbitals for corresponding
+up- and down-spins aren't required to be equivalent. This is a
+phenomenon called \emph{spin contamination} is typically incorrect,
+although it can lead to more accurate descriptions of wave functions
+as chemical bonds dissociate. The technique that requires the up- and
+down-spin electrons to be in equivalent orbitals is called
+\emph{restricted open-shell Hartree-Fock} (ROHF), and is described in
+section
+\ref{sec:rohf}. 
+
+
+\section{Unrestricted Open-Shell Hartree-Fock Theory}
+\label{sec:uhf}
+A simple way of treating systems with unpaired electrons is
+\emph{unrestricted Hartree-Fock} (UHF) theory. UHF solves different
+one-particle equations for the up- and the down-spin electrons. 
+
+Consider a section with $N_\alpha$ electrons with $\alpha$ spin, and
+$N_\beta$ electrons with $\beta$ spin. The UHF analogue of the Fock
+equations are called the \emph{Pople-Nesbet} equations. These are
+
+\begin{equation}
+F^\alpha = h + \sum_i^{N_\alpha} \left(J_i^\alpha-K_i^\alpha\right)
+             + \sum_i^{N_\beta} J_i^\beta,
+\label{eq:pnalpha}
+\end{equation}
+\begin{equation}
+F^\beta = h + \sum_i^{N_\beta} \left(J_i^\beta-K_i^\beta\right)
+             + \sum_i^{N_\alpha} J_i^\alpha.
+\label{eq:pnbeta}
+\end{equation}
+
+\noindent That is, each $\alpha$ spin electron (equation
+(\ref{eq:pnalpha})) has a Coulomb and an exchange interaction with
+each of the other $\alpha$ electrons, and only a Coulomb
+interaction with the $\beta$ electrons; each $\beta$ spin electron
+(equation (\ref{eq:pnbeta})) has a Coulomb and an exchange interaction
+with each of the other $\beta$ electrons, and only a Coulomb
+interaction with the $\alpha$ electrons. Recall that exchange
+interaction only occurs between orbitals with the same spin.
+
+UHF calculations do a good job of describing unpaired spins. One
+shortcoming to the approach is that there is nothing to require that
+orbital $\phi_i^\alpha$ has any similarity to orbital
+$\phi_i^\beta$. This contradicts our normal chemical intuition about
+these systems, and it also means that the wave function is no longer a
+pure spin state. This effect is known as \emph{spin contamination}.
+
+\section{Restricted Open-Shell Hartree-Fock Theory}
+\label{sec:rohf}
+An alternative approach is to \emph{restrict} the $\alpha$ orbitals to
+be the same as the $\beta$ orbitals, a technique known as
+\emph{restricted open-shell Hartree-Fock} (ROHF). For
+a molecule that consists of $N_c$ doubly-occupied core orbitals and
+$N_o$ singly-occupied, high-spin coupled open-shell orbitals, the wave
+function is given by 
+
+\begin{equation}
+  \Psi = |\phi_1\bar{\phi_1}\cdots\phi_{N_c}\bar{\phi_{N_c}}
+	\phi_{N_c+1}\cdots\phi_{N_c+N_o}\rangle
+\label{eq:wfngen}
+\end{equation}
+
+\noindent The energy of this wave function is given by
+
+\begin{equation}
+  E_{el} = \sum_i^{N_c+N_o}2f_ih_{ii}+ \sum_{ij}^{N_c+N_o}
+	(a_{ij}J_{ij}+b_{ij}K_{ij})
+\label{eq:eos}
+\end{equation}
+
+\noindent where $f_i$ is the occupation for orbital $i$
+
+\begin{equation}
+	f_i = \left\{\begin{array}{ll}
+		1 & \mbox{$\phi_i$ is doubly-occupied} \\
+		1/2 &  \mbox{$\phi_i$ is singly-occupied}
+	\end{array}\right.
+\label{eq:fdef}
+\end{equation}
+
+\noindent and
+
+\begin{equation}
+	a_{ij} = 2f_if_j
+\label{eq:aij}
+\end{equation}
+
+\begin{equation}
+	b_{ij} = -f_if_j 
+\label{eq:bij}
+\end{equation}
+
+\noindent with the added condition that $b_{ij} = -1/2$ if $i$ and $j$
+are both open-shell orbitals. Note that \ref{eq:eos} reduces to
+\ref{eq:eel} when all orbitals are doubly occupied.
+
+Because an open-shell wave function of the form of \ref{eq:wfngen}
+requires two sets of $f_i$ coefficients ($f_i = 1$ and $f_i = 1/2$),
+the wave function is said to have two shells. Because $(N_o+1)$ Fock 
+operators are required (see next paragraph), the wave function is said
+to have $(N_o+1)$ Hamiltonians. 
+
+A special case of restricted open-shell Hartree-Fock is the
+\emph{open-shell singlet} wave function, where the highest two
+orbitals are both singly-occupied and singlet paired. Denoting these
+two orbitals $\phi_i$ and $\phi_j$, if they have a triplet pairing
+\begin{equation}
+\phi_i\phi_j\alpha\alpha, 
+\end{equation}
+the component of the energy corresponding to these two orbitals would
+be 
+\begin{equation}
+ E_ij = J_{ij} - K_{ij}
+\end{equation}
+which is consistent with the definitions in equations (\ref{eq:fdef})
+-- (\ref{eq:bij}). However, if the two orbitals have a singlet pairing
+\begin{equation}
+(\phi_i\phi_j+\phi_j\phi_i)(\alpha\beta-\beta\alpha)
+\end{equation}
+the component of the energy corresponding to these two orbitals is now
+\begin{equation}
+ E_ij = J_{ij} + K_{ij},
+\end{equation}
+corresponding to $a_{ij}=+1/2$ and $b_{ij}=+1/2$.
+
+Open-shell singlet wave functions correspond to excited states within
+the restricted Hartree-Fock approximation, and are a good way of
+describing excited states without having to perform an expensive
+configuration interaction calculation.
+
+The procedure for optimizing the orbitals is
+slightly more complicated with the open-shell wave
+function in \ref{eq:wfngen} than it was for the closed shell
+wave function in \ref{eq:prodwf}. For optimizing the occupied
+orbitals with the unoccupied orbitals $(N_o+1)$ Fock
+operators are now required. For the core orbitals, $F^c$,
+given by 
+
+\begin{equation}
+  F_{\mu\nu}^c = f_ch + \sum_k^{N_{ham}}(a_{ck}J_{\mu\nu}^k
+	+b_{ck}K_{\mu\nu}^k)
+\label{eq:fc}
+\end{equation}
+
+\noindent is formed, and for each open-shell orbital 
+
+\begin{equation}
+  F_{\mu\nu}^i = f_ih + \sum_k^{N_{ham}}(a_{ik}J_{\mu\nu}^k
+	+b_{ik}K_{\mu\nu}^k)
+\end{equation}
+
+\noindent is formed. Note that the summation here is over $N_{ham}$,
+the number of Hamiltonians, equal to $N_o+1$. One density matrix,
+$D_c$, is formed for all the core orbitals, and density matrices $D_i$
+are formed for each of the open-shell orbitals. The Coulomb and
+exchange operators associated with each of these density matrices are
+given by
+
+\begin{equation}
+  J_{\mu\nu}^k = \sum_{\sigma\eta}^{N_{bf}}D_{\sigma\eta}^k
+	(\mu\nu|\sigma\eta)
+\label{eq:jkop}
+\end{equation}
+
+\noindent and
+
+\begin{equation}
+  K_{\mu\nu}^k = \sum_{\sigma\eta}^{N_{bf}}D_{\sigma\eta}^k
+	(\mu\sigma|\nu\eta)
+\label{eq:kkop}
+\end{equation}
+
+\noindent Forming the matrices in this fashion saves considerable
+effort because only one Coulomb and one exchange matrix are needed for
+all of the $N_c$ core orbitals 
+
+Once the $N_{ham}$ Fock operators are formed in the basis function
+space, they are again transformed into molecular orbital
+space by multiplying by the appropriate transformation
+coefficients 
+
+\begin{equation}
+  F_{ij}^k = \sum_{\mu\nu}^{N_{bf}}c_{\mu i}c_{\nu j}F_{\mu\nu}^k
+\label{eq:fij}
+\end{equation}
+
+\noindent For the core Fock operator $F^c$, $i$ and $j$ range over all
+core orbitals and all unoccupied orbitals; for the open shell Fock
+operator $F^k$, $i$ and $j$ range over open-shell orbital $k$ and all
+unoccupied orbitals. Once each Fock operator is transformed to the
+molecular orbital basis it is diagonalized; the eigenvectors yield the
+linear combination of orbitals required for the next more optimized
+set of orbitals, and the eigenvalues yield the orbital energies.
+
+Unlike the closed-shell example given earlier, mixing occupied
+orbitals that have different $f$, $a$, and $b$ coefficients can change
+the energy. Starting from the energy expression \ref{eq:eos} and taking the
+pairwise mixing of orbitals $\phi_i$ and $\phi_j$ 
+
+\begin{equation}
+  \phi_i^\prime = \frac{\phi_i + \delta_{ij}\phi_j}
+	{\sqrt{1+\delta_{ij}^2}}
+\end{equation}
+
+\noindent and
+
+\begin{equation}
+  \phi_j^\prime = \frac{\phi_j + \delta_{ij}\phi_i}
+	{\sqrt{1+\delta_{ij}^2}}
+\end{equation}
+
+\noindent to preserve orthonormality, and expanding through second
+order in $\delta_{ij}$ gives the equation for the change in energy
+
+\begin{equation}
+  \Delta E_{ij}(1+\delta_{ij}^2) = 2\delta_{ij}A_{ij}+
+	\delta_{ij}^2B_{ij}
+\label{eq:emod}
+\end{equation}
+
+\noindent where 
+
+\begin{equation}
+  A_{ij} = \langle i|F^j-F^i| j \rangle
+\end{equation}
+
+\begin{equation}
+  B_{ij} = \langle i|F^j-F^i| i \rangle - \langle j|F^j-F^i| j \rangle
+	+ \gamma_{ij}
+\end{equation}
+
+\begin{equation}
+  \gamma_{ij} = 2(a_{ii}+a_{jj}-2a_{ij})K_{ij}
+		+ (b_{ii}+b_{jj}-2b_{ij})(J_{ij}+K_{ij})
+\label{eq:gamma}
+\end{equation}
+
+\noindent Requiring the energy change be stationary 
+with respect to $\delta_{ij}$ gives
+
+\begin{equation}
+  \delta_{ij} = -\frac{A_{ij}}{B_{ij}}
+\end{equation}
+
+To preserve orbital orthonormality, $\delta_{ji} =
+-\delta_{ij}$. One way of making these variations simultaneously is to
+form the rotation matrix $\Delta$, the anti-symmetric matrix with zero
+diagonal defined by
+
+\begin{equation}
+  \Delta = \left[\begin{array}{cc}
+	0 & \frac{A_{ij}}{B_{ij}} \\
+	-\frac{A_{ij}}{B_{ij}} & 0
+	\end{array}\right]
+\end{equation}
+
+\noindent The new set of orbitals $\{\phi^{New}\}$ are obtained from
+the old set of orbitals $\{\phi^{Old}\}$ via the transformation
+
+\begin{equation}
+  [\phi^{New}] = \exp(\Delta)[\phi^{Old}]
+\label{eq:orbup}
+\end{equation}
+
+This method computes the optimal mixing of the occupied orbitals with
+respect to each other while preserving orbital orthonormality. 
+
+It should be noted that if two orbitals have the same $f$, $a$, and
+$b$ coefficients, as defined by \ref{eq:fdef} and ref{eq:abdef},
+$A_{ij} = 0$, and, consequently, no mixing is done between those
+orbitals. Thus, when the wave function only
+consists of closed-shell orbitals no occupied-occupied mixing is done,
+and only occupied-unoccupied mixing is performed via diagonalization
+of the Fock operator $F^c$. The occupied-occupied mixing would have no
+effect because the numerator of the rotation matrix $D$ would be zero,
+and the orbitals would not change.
+
+In a given iteration, first the optimal
+occupied-occupied mixing is computed via equation \ref{eq:orbup}, and
+the occupied-virtual mixing is computed by forming and diagonalizing
+the Fock operators for each Hamiltonian, via equations
+\ref{eq:fc}--\ref{eq:fij}. The iterations continue until the orbitals
+stop changing, at which point the wave function is said to be
+\emph{converged}.
+
+\section{Suggestions for Further Reading}
+Szabo and Ostlund \cite{Szabo82} provide a brief treatment of UHF
+theory in Chapter 3. Goddard and Bobrowicz's article
+\emph{The Self-Consistent Field Equations for Generalized Valence Bond
+and Open-Shell Hartree-Fock Wave Functions}\cite{Bobrowicz77},
+presents a very detailed derivation of ROHF theory.

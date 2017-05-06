@@ -1,0 +1,88 @@
+\chapter{Solvation}
+
+\section{Introduction}
+This chapter contains a brief discussion of solvation in quantum
+chemistry calculations. Chemistry is a science that takes place to a
+large degree in water and other solvents. Thus far, we have described
+molecules as if they were in a universe unto themselves, with no other
+molecules to interact with. This is, of course, a gross
+oversimplification. 
+
+Unfortunately, the description of solvents can be computationally
+intensive. We first present \emph{explicit solvent models}, which
+describe the solvent as a collection of individual molecules. This is
+a potentially rigorous approximation, but one that is generally too
+expensive for most calculations. We then consider replacing the
+explicit solvent molecules with a \emph{dielectric continuum} into
+which the molecule is embedded. The dielectric continuum allows
+charges in the solute molecule to polarize differently than if the
+molecule were alone in a vacuum.
+
+\section{Explicit Solvent Models}
+
+The simplest solvation models simply use collections of the actual
+solvent molecules for the solvent interactions. In many ways this
+technique is the most accurate way to include a solvent. The full
+electronic interaction between the solvent and solute molecules in
+explicitly included. However, there are several practical problems
+with such an approach. The most serious problem is the computational
+expense. Many solvent molecules (100--1000) are required to adequately
+solvate a substrate molecule, and the expense of describing these
+molecules with quantum chemical techniques generally far outweighs the
+effort required to describe the substrate itself. A further difficulty
+is that it is difficult to keep the solvent molecules from drifting
+off into the vacuum. The solute--solvent complex can be embedded in a
+periodic cell, but this technique, in addition to being beyond the
+scope of the current discussion, introduces additional problems when
+the solute is charged. Finally, adding so many solvent molecules
+introduces a large number of degrees of freedom that need to be either
+minimized or averaged over during the course of the calculation. For
+these reasons it is typically easier to replace the effect of the
+solvent molecules with a dielectric continuum.
+
+\section{Dielectric Continuum Models}
+The primary effect of the solvent on solute molecules is to act as a
+dielectric. This dielectric can interact with the electrostatic field
+produced by the molecule to stabilize charge polarization. 
+
+Consider the H-Cl molecule dissociating in the gas phase. With proper
+treatment, this molecule will dissociate to form neutral H and Cl
+atoms. However, in water solvent HCl will dissociate to
+H+ and Cl-, because the dipole moments of the water molecules can
+stabilize the H+ and Cl- ions separately.
+
+It is possible to embed solute molecules in a slab of dielectric
+material, that can respond in largely the same way that the solvent
+molecules would have. The dielectric can be tuned to reproduce the
+solvent in two ways. The dielectric constant itself is set to that of
+the solvent. Secondly, an effective solvent radius dictates how close
+the solvent can approach the solute.
+
+With this information, it is possible to use the
+\emph{Poisson--Boltzmann} equation to determine the response of the
+solvent to the solute charges.
+
+Typically, a solvation calculation involves computing the gas phase
+electronic structure of the solute, fitting that electronic stucture
+to a set of atomic charges, solving the Poisson--Boltzmann equation to
+determine the solvent field, fitting the solvent field to a set of
+charges at the molecular surface, solving the electronic structure of
+the solute in the present of the solvent field, and repeating until
+the process converges.
+
+
+
+\section{Acidity and pKa Information}
+It is often useful to compute the pKa of an acidic bond in
+a molecule. Quantum chemistry is able to compute these properties, but
+there are factors that complicate the matter. Many of these
+reactions involve negative ions, and in these cases diffuse functions
+must be used to properly describe the anions. Obviously solvation must
+be used, and describing a solvated proton is often a bad
+approximation, as this species may in fact be properly described by
+H$_3$O+, H$_5$O$_2$+, and other similar species. Thus, describing the
+seemingly simple dissociation reaction HCl $\rightleftharpoons$ H+ +
+Cl- would probably be better described as HCl + H$_2$O
+$\rightleftharpoons$ H$_3$O+ + Cl-, and all of the species should be
+described in solution, with diffuse functions on the basis set.
+

@@ -1,0 +1,178 @@
+\chapter{Gaussian Basis Sets}
+\label{Basis_Chapter}
+
+\section{Introduction}
+This chapter presents an introduction to the Gaussian basis sets used
+in electronic structure calculations. Fundamentally, we want to be
+able to adjust the shape of the orbitals to find the ones that yield
+the most stable energy. To adjust the shape, we use the
+\emph{linear combination of atomic orbitals} (LCAO) approach, where we
+expand an orbital $\phi_i$ in a set of 
+\emph{basis functions} $\{\chi_\mu\}$
+\begin{equation}
+	\phi_i = \sum_\mu^{nbf} c_{\mu i} \chi_\mu.
+\end{equation}
+By adjusting the coefficients $c_{\mu i}$ we can change the shape of
+the orbital $\phi_i$, which transforms the problem of finding the best
+orbital shape to a linear algebra problem.
+
+\section{Slater Functions}
+The first basis sets used were of the form 
+\begin{equation}
+	\chi(r) = Y_{lm}\exp\{-\zeta r\}.
+\end{equation}
+These were used because they have the same form as atomic
+orbitals. However, integrals between these functions proved
+difficult, and they have largely been abandoned in favor of Gaussian
+basis functions. Nonetheless, there are still two important advantages
+that Slater functions have over Gaussians. As $r\rightarrow 0$ Slater
+functions properly form a \emph{cusp} (that is, they have finite
+slope), whereas Gaussians go to zero with zero slope. Moreover, as
+$r\rightarrow \infty$, Gaussian functions fall off too quickly, as
+compated to the Slater functions.
+
+\section{Gaussian Basis Sets}
+In 1950 Boys suggested that Gaussian functions
+\begin{equation}
+	\chi(r) = x^iy^jz^k\exp\{-\alpha r^2\}
+\end{equation}
+might be a good type of basis function for quantum chemistry, because
+of the fact that the product of two Gaussians is also a Gaussian. When
+the exponents $(i,j,k)$ are zero,
+\begin{equation}
+	\exp\{-\alpha_Ar_A^2\}\exp\{-\alpha_Br_B^2\} = 
+	\exp\left\{\frac{-\alpha_A\alpha_Br_{AB}^2}{\gamma}\right\}
+	\exp\{-\gamma r_p^2\},
+\end{equation}
+
+\noindent where
+
+\begin{equation}
+	\gamma = \alpha_A+\alpha_B,
+\end{equation}
+
+\begin{equation}
+	r_p = \frac{\alpha_Ar_A+\alpha_Br_B}{\gamma}.
+\end{equation}
+
+\noindent When the exponents $(i,j,k)$ are nonzero, we can expand in a
+binomial series
+
+\begin{equation}
+	x_A^{i1}x_B^{i2} = (x_p+x_{pA})^{i1}(x_p+x_{pB})^{i2}
+		= \sum_qf_q(i1,i2,x_{pA},x_{pB})x_p^q,
+\end{equation}
+
+\noindent and we can once again express the product as a sum of
+Gaussians. The point to remember was that Gaussians were proposed and
+adopted because they were numerically easier to deal with, rather than
+being more accurate.
+
+\subsection{Contracted Basis Sets}
+
+Because Gaussian basis functions do not have the proper cusp and tail
+behavior that Slater functions do, we need to \emph{contract} several
+of them together to form a single basis function. In the jargon, the
+functions that are contracted together are each called \emph{primitive
+basis functions}, and the resulting function is referred to as a
+\emph{contracted basis function}. When quantum chemists refer to a
+\emph{basis function} they typically mean a \emph{contracted basis
+function}. 
+
+% \subsection{Split Valence Basis Sets}
+
+\subsection{Naming Gaussian Basis Sets}
+The naming of commonly used Gaussian basis sets can also be
+confusing. This section will attempt to briefly categorize some major
+families of basis sets.
+
+The smallest basis set is (not surprisingly) called a \emph{minimal
+basis} (MB) description. This basis set has one basis function per
+occupied atomic orbital on the atom. Thus, H would have one basis
+function for the $1s$ orbital, and C would have 5 basis functions for
+the $1s$, $2s$, $2p_x$, $2p_y$, $2p_z$ orbitals, in a minimal basis 
+description. The most commonly used MB basis set has the name STO-3G,
+to signify that three contracted Gaussians are used to replace one
+Slater type orbital.
+
+The problem with the minimal basis description is that it doesn't
+allow the atoms to change their shape very much. If H only has one
+function, it doesn't have any degrees of freedom to adjust to adapt to
+a different bonding situation. 
+
+Thus, we can augment our basis sets with an additional basis function
+per occupied atomic orbital. These basis sets are called \emph{double
+zeta} (DZ) basis sets. In practice most DZ basis sets are in fact
+really \emph{valence double zeta} (VDZ) basis sets, because it is only
+necessary to add additional functions for the valence orbitals, and
+not the core orbitals, since only the valence orbitals are involved in
+chemical bonding. A VDZ description of H has 2 basis functions ($1s$
+and $2s$), and a VDZ description of C has 9 basis function ($1s$,
+$2s$, $2p_x$, $2p_y$, $2p_z$, $3s$, $3p_x$, $3p_y$, $3p_z$).  Commonly
+used VDZ basis sets have the names 3-21G and 6-31G; the names signify
+the number and type of basis functions used in the contraction.
+
+But even a VDZ description doesn't have as much freedom as we would
+like. Molecules often polarize when near a large charge or in the
+presence of an external field. VDZ basis sets let the functions get
+larger or smaller, but don't let them polarize. So we add
+\emph{polarization functions}, which are functions with one higher
+angular momentum than the highest occupied basis function. Thus, for
+H, which has occupied $1s$ functions, we would add $2p$ functions, and
+for C, which has occupied $2p$ functions, we would add $3d$
+functions. This description is now called \emph{double zeta plus
+polarization} (DZP). H now requires 5 basis functions ($1s$, $2s$,
+$2p_x$, $2p_y$, $2p_z$ orbitals), and C requires 15 functions ($1s$,
+$2s$, $2p_x$, $2p_y$, $2p_z$, $3s$, $3p_x$, $3p_y$, $3p_z$, $3d_{xx}$,
+$3d_{yy}$, $3d_{zz}$, $3d_{xy}$, $3d_{yz}$, $3d_{xz}$). Commonly used
+DZP basis sets are the 6-31G** basis set and the cc-pvDZ basis
+set. Sometimes, a 6-31G* basis set is used; here the single *
+indicates that polarization functions are included on the heavy atoms
+(everything except H) but not on H itself. The 6-31G** basis is one of
+the most commonly used basis sets, and is a good default basis set to
+use when studying a new molecule.
+
+Finally, even DZP basis sets have a difficult time treating negative
+ions, which typically are in orbitals much more diffuse than the
+valence orbitals. Diffuse orbitals are also often useful in describing
+excited states of molecules. For these cases, we augment our basis
+sets with a set of \emph{diffuse} basis functions. These basis sets
+are typically denoted using a + suffix, to denote diffuse functions
+on the heavy atoms, or a ++ suffix to denote diffuse functions on all
+atoms. 
+
+Note that when $d$-functions are included there are six functions listed
+($d_{xx}$, $d_{yy}$, $d_{zz}$, $d_{xy}$, $d_{yz}$, $d_{xz}$), rather
+than the 5 that most students of chemistry are familiar with
+($d_{xx-yy}$, $d_{zz}$, $d_{xy}$, $d_{yz}$, $d_{xz}$). The six
+functions are the simple Cartesian forms of the basis functions, and
+are the easiest way to input the basis functions. However, note that
+with the six functions listed, it is possible to make a linear
+combination, $d_{xx} + d_{yy} + d_{zz}$, that actually has $s$-like
+angular momentum. Keeping all six functions leads to a basis set that
+has extra description of $s$-type angular momentum. Such a description
+isn't wrong, but might lead to an unbalanced description: the $s$-type
+angular momentum has a more accurate description than the
+$d$-type. Many people believe that such an unbalanced description is
+misleading, and thus remove the $s$-combination of the $d$-basis
+functions. Many people do not remove this combination. 
+
+Table \ref{table:bsets} summarizes basis function information.
+
+\begin{table}
+\caption{Different Levels of Basis Functions. Shown is the level, the
+number of basis functions used for H and C, and some commonly used
+examples.}
+\label{table:bsets}
+\begin{tabular}{llll}\hline\hline
+Level & $N_{bf}$[H] & $N_{bf}$[C] & Examples \\  \hline
+Minimal Basis (MB) & 1 & 5 & STO-3G \\
+Double $\zeta$ (DZ) & 2 & 9 & 3-21G, 4-31G, 6-31G \\
+Double $\zeta$ + polarization (DZP) & 5 & 15 & 6-31G**, cc-pVDZ\\ \hline\hline
+\end{tabular}
+\end{table}
+
+\section{Suggestions for Further Reading}
+Boys's 1950 article \cite{Boys50} has a very good treatment of
+Gaussian basis functions and the reasons why they were preferred to
+Slater functions. 

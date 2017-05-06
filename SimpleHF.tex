@@ -1,0 +1,532 @@
+\chapter{Simple Hartree-Fock Theory}
+\label{chap:simplehf}
+
+\section{Introduction}
+The last chapter showed how we can construct and solve Hamiltonians
+for simple one-dimensional systems to get a feeling for how quantum
+mechanical systems work. The current chapter, and the rest of the
+book, will focus on a particular type of quantum mechanical system,
+the electronic structure problem, the study of which is known as
+quantum chemistry.
+
+This chapter introduces \emph{Hartree-Fock} (HF) theory. HF is a
+suitable place to start a discussion about practical quantum chemistry
+because the equations are relatively simple and yet much profound
+chemistry can be described by them. The problem that faces quantum
+chemistry is the Schrodinger equation. Typically, Schrodinger
+equations of more than a few particles cannot be solved exactly, and a
+molecule with $N_A$ nuclei and $N_e$ electrons has $N_p = N_A + N_e$
+particles. Fortunately, the \emph{Born-Oppenheimer approximation}
+(section \ref{sec:eham}) lets us reduce the number of particles to
+only the $N_e$ electrons, and the \emph{self-consistent field
+approximation} (section \ref{sec:scf}) reduces the problem to having
+to solve for one particle (which is now an \emph{orbital} that holds
+two electrons) at a time. The resulting equations are the Fock
+equations (section \ref{sec:fock}), whose solutions are expressed as a
+linear combination of atomic orbitals (section \ref{sec:basis}). We
+conclude with a description of properties that can be obtained from HF
+calculations (section \ref{sec:hfprops}).
+
+\section{The Electronic Hamiltonian}
+\label{sec:eham}
+Electronic structure theory seeks to find solutions to the
+non-relativistic time-independent Schrodinger equation 
+\begin{equation} 
+	H\Psi = E\Psi	
+\end{equation}
+where $H$ is the Hamiltonian operator for the nuclei and
+electrons in a molecule. For these molecular systems, $H$ is given by 
+\begin{equation}
+  H = -\sum_{i=1}^{N_{el}}t_i
+	- \sum_{A=1}^{N_{at}}t_A
+	- \sum_{i=1}^{N_{el}}\sum_{A=1}^{N_{at}}\frac{Z_A}{r_{iA}} 
+	+ \sum_{i>j}^{N_{el}}\frac{1}{r_{ij}}
+	+ \sum_{A=1}^{N_{at}}\sum_{B=1}^{N_{at}}\frac{Z_AZ_B}{R_{AB}}
+\end{equation}
+for a system with $N_{el}$ electrons and $N_{at}$ nuclei,
+where the quantities in $H$ are expressed in atomic units, $t_i$ and
+$t_A$ are the kinetic energy of electron $i$ and nuclei $A$,
+respectively, $M_A$ is the nuclear mass of atom $A$ in units of
+electron mass, $Z_A$ is the charge on nucleus $A$, $r_{iA}$ is the
+distance of electron $i$ from nucleus $A$, $r_{ij}$ is the distance
+between electrons $i$ and $j$, and $R_{AB}$ is the distance between
+nuclei $A$ and $B$.
+
+The molecular Hamiltonian is commonly simplified using the
+\emph{Born-Oppenheimer approximation}, which derives from the observation
+that nuclei are much heavier than electrons (protons and neutrons are
+some 1800 times heavier than an electron, and most nuclei have many
+protons and neutrons), and consequently move much more slowly than do
+electrons.  To a good approximation one can fix the nuclear
+coordinates and consider only the electronic part of the
+Hamiltonian. The consequence of this approximation is that the
+molecular Hamiltonian $H$ now becomes $H_{el}$, the electronic
+Hamiltonian, and is given by 
+\begin{equation} 
+  H_{el} = -\sum_{i=1}^{N_{el}}t_i
+	- \sum_{i=1}^{N_{el}}\sum_{A=1}^{N_{at}}\frac{Z_A}{r_{iA}} 
+	+ \sum_{i>j}^{N_{el}}\frac{1}{r_{ij}}
+\label{eq:hel}
+\end{equation}
+For simplicity, the terms in $H_{el}$ involving only one
+electron are grouped into a single term $h$,
+\begin{equation}
+  h = -\sum_{i=1}^{N_{el}} \left(t_i
+	+\sum_{A=1}^{N_{at}}\frac{Z_A}{r_{iA}}
+	\right)
+\end{equation}
+and $H_{el}$ is given by
+\begin{equation}
+  H_{el} = h + \sum_{i>j}^{N_{el}} \frac{1}{r_{ij}}
+\end{equation}
+
+The nuclear repulsion energy
+\begin{equation}
+  E_{nr} = \sum_{A>B}^{N_{at}} \frac{Z_AZ_B}{R_{AB}}
+\end{equation}
+is constant for a fixed geometry and can be evaluated
+separately. $H$ will hereafter refer to only the electronic
+Hamiltonian $H_{el}$.
+
+\section{The Molecular Wave Function}
+The solutions to $H$ are in the form of a product of molecular
+orbitals 
+\begin{equation}
+  \Psi = \prod_i^{N_{el}} \psi_i.
+\end{equation}
+The molecular spin orbitals $\psi_i$ are composed of a
+spatial function $\phi_i$ and a spin function $\theta_i$. The spatial
+orbital $\phi_i$ is a function of the position $r_i$ of electron
+$i$. $\phi_i$ describes the spatial distribution of electron $i$ such
+that $|\phi_i(r)|^2dr$ is the probability of finding the electron in
+the volume element $dr$. This probability for each orbital integrated
+over all space must be one, giving the normalization condition
+\begin{equation}
+  \int\phi_i^*(r)\phi_i(r)dr = 1
+\end{equation}
+Spatial molecular orbitals can be taken to form an
+orthonormal set 
+\begin{equation}
+  \int\phi_i^*(r)\phi_j(r)dr = \delta_{ij}
+\end{equation}
+
+Orbital $\phi_i$ also has a spin component $\theta_i$. The
+spin of an electron in orbital $\phi_i$ is described by one of the
+orthogonal pair of functions $\alpha$---\emph{spin up}---and
+$\beta$---\emph{spin down}. 
+Each spatial orbital can accommodate one
+electron with $\alpha$-spin, and one electron with $\beta$-spin. Thus,
+the simple product wave function has the form 
+\begin{equation}
+	\phi_1\alpha\phi_1\beta\phi_2\alpha\phi_2\beta\cdots
+	\phi_{N_{occ}}\alpha\phi_{N_{occ}}\beta
+\label{eq:prodwfn}
+\end{equation}
+where $N_{occ} = N_{el}/2$. The wave function for an
+electron that describes both the spatial and spin components is the
+spin orbital $\psi$
+\begin{equation}
+	\psi_1 = \phi_1\alpha, 
+\end{equation}
+\begin{equation}
+	\psi_2 = \phi_1\beta,  
+\end{equation}
+and so on.  Spin orbitals are convenient for evaluating many
+of the energy expressions in electronic structure theory; Appendix ???
+describes techniques for evaluating matrix elements using spin
+orbitals.
+
+Because each of the individual orbitals is normalized, the total
+probability of finding an electron anywhere in the
+wave function is equal to $N_{el}$. 
+\begin{equation}
+  |\Psi|^2 = \int\Psi^*(1\cdots N_{el})\Psi(1\cdots N_{el})
+	dr_1\dots dr_{N_{el}}
+\end{equation}
+
+\section{Antisymmetry and the Slater Determinant}
+The Pauli exclusion principle states that a wave function
+must change sign when the spatial and spin components of any two
+electrons are exchanged. 
+\begin{equation}  
+	\Psi(1,2,\cdots,i,\cdots,j,\cdots,N_{el}) = 
+	-\Psi(1,2,\cdots,j,\cdots,i,\cdots,N_{el})
+\end{equation}
+The Pauli principle derives from the fact that electrons are
+indistinguishable particles, so that observable properties of the wave
+function cannot change upon exchange of electrons. Because these
+observables depend on $|\Psi|^2$, the wave function must either be
+symmetric (having the same sign) or anti-symmetric (having opposite
+sign) when electrons are exchanged. In practice only anti-symmetric
+wave functions are observed.
+
+Because the wave functions must be anti-symmetric, the simple product
+wave function form \ref{eq:prodwfn} will not work. A convenient
+method of making a simple product wave function
+anti-symmetric is to use a Slater determinant. For the
+two electron simple product wave function
+$\phi_1(1)\alpha(1)\phi_1(2)\beta(2)$, the anti-symmetric wave
+function is given by evaluating  
+\begin{eqnarray}
+  \Psi(1,2) &=& 2^{-1/2} \begin{array}{|cc|}
+		\phi_1(1)\alpha(1) & \phi_1(1) \beta(1) \\
+		\phi_1(2)\alpha(2) & \phi_1(2) \beta(2) 
+	\end{array} \\
+     &=& 2^{-1/2}\phi_1(1)\phi_1(2)(\alpha(1)\beta(2) - 
+		\beta(1)\alpha(2))
+\end{eqnarray}
+The generalization of the Slater determinant to an arbitrary
+number of particles (and using spin orbitals to signify an arbitrary
+spin coupling) is 
+\begin{equation}
+  \Psi(1,2,\dots,N) = (N!)^{-1/2} \begin{array}{|cccc|}
+	\psi_1(1) & \psi_2(1) & \cdots & \psi_N(1) \\
+	\psi_1(2) & \psi_2(2) & \cdots & \psi_N(2) \\
+        \vdots    & \vdots &   & \vdots \\
+	\psi_1(N) & \psi_2(N) & \cdots & \psi_N(N) \\
+	\end{array}
+\label{eq:slatdet}
+\end{equation}
+The $(N!)^{-1/2}$ is the normalization condition. For
+convenience, two shorthand notations are often used for
+\ref{eq:slatdet}. The first
+\begin{equation}
+	\Psi(1,\dots,N) = (N!)^{1/2}\mathcal{A}
+	\left[\psi_1(1)\psi_2(2)\cdots\psi_N(N)\right]
+\end{equation}
+uses the anti-symmetry operator $\mathcal{A}$ to represent
+the determinant and explicitly normalizes the wave function. The
+second notation uses Dirac bracket notation
+\begin{equation}
+  \Psi(1,\dots,N) = |\psi_1(1)\psi_2(2)\cdots \psi_N(N)\rangle
+\end{equation}
+to represent both the Slater determinant and the
+normalization constant $(N!)^{-1/2}$. Both notations use only the
+diagonal of the Slater determinant to represent the wave function.
+
+Because Slater determinants are so commonly used to antisymmetrize
+wave functions, individual configurations (as shown above) of a wave
+function are often referred to as determinants. 
+
+\section{The Self Consistent Field Approximation}
+\label{sec:scf}
+Even with the restrictions already made, it is not in general possible
+to solve \ref{eq:hel} for many-electron wave functions. Consequently,
+we use the \emph{self-consistent field} (SCF) approximation to replace
+the many-electron Hamiltonian with many one-electron Hamiltonians. In
+the SCF approximation, each electron no longer interacts with other
+electrons, but with the \emph{average field} produced by the other
+electrons. 
+
+The SCF approximation has some dramatic shortcomings. Consider two
+electrons in a single orbital. Because the electrons only see each
+other's average field, a configuration where the electrons are next to
+each other is just as likely as a configuration where the electrons
+are on the other side of the molecule. The interactions
+excluded by the SCF approximation are known as \emph{electron
+correlation}, and subsequent chapters will deal with ways of
+correcting for it.
+
+Applying the SCF approximation to the exact electronic Hamiltonian
+given by \ref{eq:hel} is commonly known as the Hartree-Fock (HF)
+approximation, which reduces the electronic
+Hamiltonian to 
+\begin{equation}
+	H_{HF} = h + v_{HF}	
+\end{equation}
+where $v_{HF}$ is a two-electron operator representing the
+Hartree-Fock field. 
+
+\section{The Hartree-Fock Energy Expression}
+Given a wave function with $N$ doubly-occupied
+orbitals
+\begin{equation}
+  \Psi = |\phi_1(1)\alpha(1)\phi_1(2)\beta(2)\cdots
+	\phi_N(2N-1)\alpha(2N-1)\phi_N(2N)\beta(2N)\rangle
+\label{eq:prodwf}
+\end{equation}
+we can simplify the notation by writing
+\begin{eqnarray}
+  \Psi &=& |\phi_1\bar{\phi_1}\cdots\phi_N\bar{\phi_N}\rangle \\
+   &=& |1\bar{1}\cdots N\bar{N}\rangle
+\end{eqnarray}
+where a bar over an orbital signifies spin down, and no bar signifies
+spin up, and the order of the orbitals implies electron index. The
+energy of $\Psi$ is thus given by  
+\begin{eqnarray}
+  E &=&  \frac {\langle\Psi|H|\Psi\rangle}{\langle\Psi|\Psi\rangle} \\
+    &=&  \frac {\langle 1\bar{1}\cdots N\bar{N}|h + v^{HF}|
+	1\bar{1}\cdots N\bar{N} \rangle}
+	{\langle 1\bar{1}\cdots N\bar{N}|1\bar{1}\cdots N\bar{N}\rangle}
+\end{eqnarray}
+The denominator will be unity if the wave function is
+properly orthonormalized. The numerator can be broken into
+one-electron and two-electron terms, where the one-electron terms are
+given by
+\begin{equation}
+  \langle 1\bar{1}\cdots N\bar{N}|h|1\bar{1}\cdots N\bar{N} \rangle
+	= \sum_{i=1}^N 2h_{ii}
+\end{equation}
+and the two-electron terms are given by
+\begin{equation}
+  \langle 1\bar{1}\cdots N\bar{N}|v^{HF}|1\bar{1}\cdots N\bar{N} \rangle
+	= \sum_{i,j=1}^N (2J_{ij}-K_{ij})
+\end{equation}
+
+The electronic energy is given by
+\begin{equation}
+  E_{el} = \sum_i^N 2h_{ii} + \sum_{ij}^N(2J_{ij}-K_{ij})
+\label{eq:eel}
+\end{equation}
+The $J_{ij}$ terms are matrix elements of the Coulomb
+operator, which is the quantum mechanical operator corresponding to
+the macroscopic Coulombic repulsion between electrons $i$ and $j$. The
+one-particle Coulomb operator $J^i(1)$ is given by
+\begin{equation}
+  J^i(1) = \int\frac{\phi_i^*(2)\phi_i(2)}{r_{12}}dr_2
+\label{eq:jone}
+\end{equation}
+where $r_{12}$ is the distance between electrons 1 and
+2. The matrix element $J_{ij}$ is given by
+\begin{equation}
+  J_{ij} = \int\phi_j^*(1)J^i(1)\phi_j(1)dr_1 
+	= \int\phi_i^*(1)J^j(1)\phi_i(1)dr_1 
+\end{equation}
+This element is commonly written $(ii|jj)$, where the first
+half of the symbol corresponds to electron 1 and the second part of
+the symbol corresponds to electron 2.
+
+The $K_{ij}$ terms are elements of the exchange operator, which is
+purely a manifestation of the anti-symmetry of the wave function and
+has no macroscopic correspondence. The one-particle exchange operator
+$K^i(1)$ is most easily defined in terms of its action on another
+orbital $\phi_j$:
+\begin{equation}
+  K^i(1)\phi_j(1) = \left(\int\frac{\phi_i^*(2)\phi_j(2)}
+		{r_{12}}dr_2\right)\phi_i(1).
+\label{eq:kone}
+\end{equation}
+The $K_{ij}$ matrix element is given by
+\begin{equation}
+  K_{ij} = \int\phi_j^*(1)K^i(1)\phi_j(1)dr_1 
+	= \int\phi_i^*(1)K^j(1)\phi_i(1)dr_1 
+\end{equation}
+This matrix element is often written as $(ij|ij)$.
+
+\section{The Fock Equations}
+\label{sec:fock}
+The variational principle states that the energy evaluated via
+\ref{eq:eel} of any approximate wave function is an upper
+bound to the exact energy. Therefore, the optimal
+orbitals ${\phi_i}$ are those that give the lowest energy of
+the total wave function. As orbital $\phi_i$ changes to $(\phi_i
++ \delta\phi_i) = (\phi_i + \delta)$, the electronic energy from
+\ref{eq:eel} changes to
+\begin{equation}
+  E(i+\delta) = E(i) + 4\sum_i^N\langle\delta|F^i|i\rangle
+	+ \mathcal{O}(\delta^2)
+\end{equation}
+where $F^i$ is the \emph{Fock operator} given by
+\begin{equation}
+  F^i = h + J^i + \sum_{j\neq i}(2J^i-K^i)
+\label{eq:fock}
+\end{equation}
+The Fock operator corresponds to the first derivative of the
+electronic energy with respect to variations in the orbitals.  Because
+$J_{ii} = K_{ii}$,
+\begin{equation}
+  J_{ii} = 2J_{ii} - K_{ii}
+\end{equation}
+and we can add and subtract self-terms to obtain the
+closed-shell Fock operator
+\begin{equation}
+  F^c = h + \sum_j (2J^j-K^j)
+\end{equation} 
+\begin{equation}
+  F^c_{ij} = \langle i|F^c|j \rangle
+\end{equation}
+which is the same for all orbitals in our doubly-occupied
+core. It is easy to show that variations between occupied orbitals do
+not change the electronic energy for the closed-shell wave function
+being considered, and consequently the orbital variations
+$\delta\phi_i$ must be orthogonal to all occupied orbitals.
+
+\section{Basis Set Expansions}
+\label{sec:basis}
+In practice, the orbital optimization is achieved by expanding the
+orbitals in a set of Gaussian basis functions
+${\chi_\mu}$ 
+\begin{equation}
+  \phi_i = \sum_\mu^{N_{bf}} c_{\mu i}\chi_{\mu}
+\label{eq:bset}
+\end{equation}
+for a basis set with $N_{bf}$ basis functions. Using
+Gaussian basis functions both one-electron and two-electron integrals
+are easily evaluated.
+\begin{equation}
+  h_{ij} = \sum_{\mu\nu}^{N_{bf}}c_{\mu i}c_{\nu j}h_{\mu\nu}
+\label{eq:hij}
+\end{equation}	
+is the expression for the $h_{ij}$ matrix element, where
+$h_{\mu\nu}$ is the one electron operator element between basis
+functions $\chi_\mu$ and $\chi_\nu$, and
+\begin{equation}
+  J_{ij}^k = \langle i|J^k|j \rangle 
+	= (kk|ij) 
+	= \sum_{\mu\nu}^{N_{bf}} c_{\mu i}c_{\nu j}(kk|\mu\nu) 
+	= \sum_{\mu\nu}^{N_{bf}} c_{\mu i}c_{\nu j}
+	\sum_{\sigma\eta}^{N_{bf}}D_{\sigma\eta}^k 
+	(\sigma\eta|\mu\nu)
+\label{eq:jij}
+\end{equation}
+is the expression for the $ij$-th element of the $J^k$ Coulomb
+operator and
+\begin{equation}
+  K_{ij}^k = \langle i|K^k|j \rangle 
+	= (ki|kj) 
+	= \sum_{\mu\nu}^{N_{bf}} c_{\mu i}c_{\nu j}(k\mu|k\nu) 
+	= \sum_{\mu\nu}^{N_{bf}} c_{\mu i}c_{\nu j}
+	\sum_{\sigma\eta}^{N_{bf}}D_{\sigma\eta}^k
+	(\sigma\mu|\eta\nu)
+\label{eq:kij}
+\end{equation}
+is the expression for the $ij$-th element of the $K^k$
+exchange operator. The terms
+\begin{equation}
+  (\sigma\eta|\mu\nu) = \int\frac{\chi_\sigma^*(1)\chi_\eta(1)
+	\chi_\mu^*(2)\chi_\nu(2)}{r_{12}}dr_1dr_2
+\end{equation}
+are the two-electron integrals over basis functions, and 
+\begin{equation}
+  D_{\sigma\eta}^k = c_{\sigma k}c_{\eta k}
+\label{eq:dens}
+\end{equation}
+is the corresponding density matrix element for orbital
+$\phi_k$. The set of orbitals are varied by varying the coefficients
+$c_\mu i$ of the basis functions.
+
+A wave function of the form of \ref{eq:prodwf} that contains only
+doubly occupied orbitals is called a closed-shell wave function. For
+closed-shell wave functions, the orbitals are optimized by first
+forming the closed-shell Fock operator $F^c$, given by
+\ref{eq:fock}, and is obtained by first forming the core density
+matrix $D_c$ 
+\begin{equation} 
+  D_{\sigma\eta}^c = \sum_i^{occ}c_{\sigma i}c_{\eta i}
+\end{equation}
+where the summation occurs only over doubly-occupied
+orbitals. $F^c$ is given by
+\begin{equation}
+  F_{\mu\nu}^c = h_{\mu\nu} + \sum_{\sigma\eta}^{N_{bf}}
+	D_{\sigma\eta}^c\left(2(\mu\nu|\sigma\eta) -
+	(\mu\sigma|\nu\eta)\right)
+\end{equation}
+in basis-function space, and
+\begin{equation}
+  F_{ij}^c = \sum_{\mu\nu}^{N_{bf}}c_{\mu i}c_{\nu j}F_{\mu\nu}^c
+\end{equation}
+over molecular orbitals, where $i$ and $j$ now range over
+both occupied and virtual (unoccupied) orbitals. The Fock matrix in
+molecular orbital space is diagonalized
+\begin{equation}
+	U^\dagger F U = \epsilon
+\end{equation}
+and the eigenvectors ${U_i}$ give the linear combination of
+occupied and virtual orbitals that give the improved set of orbitals
+${\phi_i}$, and the eigenvalues $\epsilon_i$ give the orbital energies
+for these orbitals. This procedure is repeated iteratively until
+either the orbitals or the energy stops changing; at this point the
+optimal set of orbitals has been obtained and the wave function is
+said to be converged.
+
+\section{Properties from HF Calculations}
+\label{sec:hfprops}
+\subsection{Energies and Structures}
+The fundamental quantity we get from quantum chemistry calculations is
+the \emph{total energy} of the molecular configuration. Suppose we
+wanted to be able to estimate the energy of different C$_2$H$_2$Cl$_2$
+configurations: Cl$_2$CCH$_2$, \emph{cis}-CHCl-CHCl, and
+\emph{trans}-CHCl-CHCl. We could guess fairly accurate geometries for
+each configuration, and then use some quantum chemistry technique
+(e.g. B3LYP/6-31G**) to compute single-point energies
+(i.e. with no geometry optimization) for each structure. By comparing
+the energies, we could get a qualitative understanding of the energy
+ordering of the different configurations.
+
+But there simply isn't much reason to do guess geometries. As we saw
+earlier, it is relatively straightforward to compute the forces and
+use these to optimize our guess geometries. We can then obtain both
+structural and energetic information about our set of molecules.
+
+When we use a decent quantum chemistry technique, such as
+B3LYP/6-31G**, we can expect to compute \emph{relative} energies of
+different compounds to roughly 5 kcal/mol. There are a few systems
+that might be slightly more reliable (simple alkanes and alkenes), and
+a few systems that might be slighly less reliable (often systems
+involving different spin states). Transition states typically involve
+slightly greater errors in the energies than do ground state
+calculations. Geometries are typically reliable to $>$ 0.05 \AA.
+
+\subsection{Atomic Charges}
+
+We know that molecules consist of localized positively charged nuclei,
+with a delocalized cloud of electron density glueing them
+together. For many applications, particularly in describing molecules
+with a classical \emph{force-field}, it is useful to be able to
+simplify this electrostatic distribution into a set of charges that
+are centered only at the nuclei of the molecules. 
+
+The simplest way to obtain atomic charges is through \emph{Mulliken
+charges}. Mulliken charges assume that the contributions to the atomic
+charges are determined by the character of the orbitals on the basis
+functions. Thus, the charge on atom $A$ is given by:
+\begin{equation}
+	q_A = Z_A - \sum_i^{N_{orbs}} \sum_{\mu\in A} \sum_{\nu\in A} 
+		c_{\mu i}c_{\nu i}S_{\mu\nu}
+\end{equation}
+where $Z_A$ is the nuclear charge on atom A, $c_{\mu i}$ is
+the orbital coefficient on basis function $\chi_\mu$, $S_{\mu\nu}$ is
+the amount that the $\chi_\mu$ and $\chi_\nu$ basis function overlap
+each other, and the $\mu\in A$ notation signifies that the summation
+occurs over only those basis functions that have their centers on atom
+$A$.
+
+Unfortunately, the quality of the Mulliken fit is typically only as
+good as the quality of the basis set itself. For example, it is
+possible (though not advisable!) to perform a very good calculation on
+water by putting all of the basis function on the oxygen atom, and
+none on either of the two hydrogen atoms. In such a case, the Mulliken
+charges would predict that all of the electrons would be on the oxygen
+atom, which would thus have a charge of -2, whereas the hydrogen atoms
+would each have charges of +1. The point of this argument is not that
+anyone would ever use such a basis set (they wouldn't, hopefully), but
+that calculations with similarly \emph{unbalanced} basis sets are one
+major limitation of Mulliken population analysis. Furthermore, some
+scientists use \emph{plane wave basis sets}, which are beyond the
+scope of the current discussion, but where the basis functions do not
+have origins on \emph{any} atoms.
+
+Because of these limitations, many have begun to use
+\emph{electrostatic potential} (ESP) fitting to obtain atomic
+charges. The idea behind this technique is to compute the
+electrostatic field due to the nuclei and electron on a series of
+points outside of the molecule; then a \emph{least-squares fit} is
+performed to find the set of atomic charges that best reproduce this
+field on the grid of points. There is a certain theoretical elegance
+to such an approach, in that it is independent of the basis
+set. However, ESP-based charges can display bizzare irregularities of
+their own. Since the least-squares fitting procedure is an
+overdetermined problem, there are typically many different sets of
+charges that can reproduce a given electrostatic field, and there is
+no reason to think that the one that the least-squares fitting
+procedure obtains is necessarily the proper one.
+
+Right now our best recommendation is to use Mulliken charges.
+
+\section{Suggestions for Further Reading}
+Roothan's 1951 review article \emph{New Developments in
+Molecular Orbital Theory} \cite{Roothan51} described the Hartree-Fock
+approximation and the LCAO approach used here. Szabo and Ostlund's
+\emph{Modern Quantum Chemistry} \cite{Szabo82} also provides a
+detailed description of this material.
+
